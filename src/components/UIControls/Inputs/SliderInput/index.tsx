@@ -9,7 +9,7 @@ interface SliderInputProps {
 }
 
 const TRACK_HEIGHT = 180;
-const INDICATOR_SIZE = 44;
+const INDICATOR_SIZE = 22;
 
 export default function SliderInput({ label, position }: SliderInputProps) {
     // Convert initial position to percent (0-100)

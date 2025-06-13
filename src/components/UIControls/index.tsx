@@ -5,7 +5,7 @@ export default function UIControls() {
     return (
         <div>
             <Inputs />
-            <Terminal />
+            <Terminal message="All systems operational." type="success" />
         </div>
     )
 } 

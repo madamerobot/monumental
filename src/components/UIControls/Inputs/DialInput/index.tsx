@@ -11,9 +11,9 @@ interface DialInputProps {
 
 const DIAL_SIZE = 180;
 const DIAL_RADIUS = DIAL_SIZE / 2;
-const INDICATOR_SIZE = 40;
+const INDICATOR_SIZE = 24;
 const INDICATOR_RADIUS = INDICATOR_SIZE / 2;
-const INDICATOR_DISTANCE = DIAL_RADIUS - INDICATOR_RADIUS;
+const INDICATOR_DISTANCE = DIAL_RADIUS;
 
 export default function DialInput({ degrees: initialDegrees, label }: DialInputProps) {
     const [degrees, setDegrees] = useState(Number(initialDegrees));
@@ -37,15 +37,14 @@ export default function DialInput({ degrees: initialDegrees, label }: DialInputP
     // Calculate indicator position from degrees
     const getIndicatorPosition = (angle: number) => {
         const rad = (angle - 90) * (Math.PI / 180);
-        const x = DIAL_RADIUS + INDICATOR_DISTANCE * Math.cos(rad) - INDICATOR_RADIUS;
-        const y = DIAL_RADIUS + INDICATOR_DISTANCE * Math.sin(rad) - INDICATOR_RADIUS;
+        const x = DIAL_RADIUS + INDICATOR_DISTANCE * Math.cos(rad);
+        const y = DIAL_RADIUS + INDICATOR_DISTANCE * Math.sin(rad);
         return { left: x, top: y };
     };
 
     const onPointerDown = (e: React.PointerEvent) => {
         dragging.current = true;
         (e.target as HTMLElement).setPointerCapture(e.pointerId);
-        // Do NOT update the angle here to prevent jump
     };
 
     const onPointerMove = (e: React.PointerEvent) => {
