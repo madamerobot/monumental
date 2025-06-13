@@ -1,0 +1,155 @@
+.inputsContainer {
+    display: flex;
+    align-items: flex-end;
+    gap: 22px;
+    background: #d6d6d6;
+    padding: 32px 24px;
+    border-radius: 0;
+    font-family: 'Satoshi', Arial, Helvetica, sans-serif;
+}
+
+.dialsSection {
+    display: flex;
+    gap: 48px;
+}
+
+.dialWrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.dial {
+    position: relative;
+    width: 180px;
+    height: 180px;
+    border: 3px solid #111;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 16px;
+}
+
+.dialValue {
+    font-size: 56px;
+    font-weight: 400;
+    color: #111;
+    z-index: 1;
+}
+
+.dialIndicator {
+    position: absolute;
+    left: 24%;
+    top: 50%;
+    width: 40px;
+    height: 40px;
+    background: #111;
+    border-radius: 50%;
+    transform: translate(-50%, -100%);
+    z-index: 2;
+}
+
+.dialLabel {
+    background: #111;
+    color: #fff;
+    font-size: 24px;
+    font-weight: 400;
+    padding: 10px 0;
+    width: 180px;
+    text-align: center;
+    border-radius: 20px;
+    margin-top: 8px;
+}
+
+.slidersSection {
+    display: flex;
+    flex-direction: row;
+    gap: 32px;
+    align-items: flex-end;
+}
+
+.sliderWrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.sliderTrack {
+    position: relative;
+    width: 4px;
+    height: 180px;
+    background: none;
+    border-left: 2px solid #111;
+    margin-bottom: 16px;
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+}
+
+.sliderIndicator {
+    position: absolute;
+    left: 50%;
+    width: 44px;
+    height: 44px;
+    background: #111;
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.sliderLabel {
+    background: #111;
+    color: #fff;
+    font-size: 24px;
+    font-weight: 400;
+    padding: 10px 0;
+    width: 180px;
+    text-align: center;
+    border-radius: 20px;
+    margin-top: 8px;
+}
+
+.coordinatesSection {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-left: 22px;
+}
+
+.coordinatesValues {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    font-size: 48px;
+    font-weight: 400;
+    color: #111;
+    margin-bottom: 8px;
+    gap: 4px;
+}
+
+.coordinatesCircle {
+    width: 140px;
+    height: 140px;
+    background: #ff4929;
+    border-radius: 50%;
+    margin-bottom: 16px;
+}
+
+.coordinatesLabel {
+    background: #111;
+    color: #fff;
+    font-size: 24px;
+    font-weight: 400;
+    padding: 10px 0;
+    width: 320px;
+    text-align: center;
+    border-radius: 20px;
+    margin-top: 8px;
+}
+
+.coordinatesWrapper {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
