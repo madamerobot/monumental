@@ -1,3 +1,6 @@
+"use client"
+
+import React, { useRef, useState } from 'react';
 import styles from './DialInput.module.css';
 
 interface DialInputProps {
@@ -6,15 +9,78 @@ interface DialInputProps {
     indicatorAngle?: number; // in degrees
 }
 
-export default function DialInput({ degrees, label, indicatorAngle = 0 }: DialInputProps) {
-    // The indicator is rotated by indicatorAngle degrees and then translated outward
+const DIAL_SIZE = 180;
+const DIAL_RADIUS = DIAL_SIZE / 2;
+const INDICATOR_SIZE = 40;
+const INDICATOR_RADIUS = INDICATOR_SIZE / 2;
+const INDICATOR_DISTANCE = DIAL_RADIUS - INDICATOR_RADIUS;
+
+export default function DialInput({ degrees: initialDegrees, label }: DialInputProps) {
+    const [degrees, setDegrees] = useState(Number(initialDegrees));
+    const dialRef = useRef<HTMLDivElement>(null);
+    const dragging = useRef(false);
+
+    // Helper to get angle from center to mouse
+    const getAngle = (clientX: number, clientY: number) => {
+        const rect = dialRef.current?.getBoundingClientRect();
+        if (!rect) return degrees;
+        const cx = rect.left + rect.width / 2;
+        const cy = rect.top + rect.height / 2;
+        const dx = clientX - cx;
+        const dy = clientY - cy;
+        let angle = Math.atan2(dy, dx) * (180 / Math.PI);
+        angle = angle + 90;
+        if (angle < 0) angle += 360;
+        return angle;
+    };
+
+    // Calculate indicator position from degrees
+    const getIndicatorPosition = (angle: number) => {
+        const rad = (angle - 90) * (Math.PI / 180);
+        const x = DIAL_RADIUS + INDICATOR_DISTANCE * Math.cos(rad) - INDICATOR_RADIUS;
+        const y = DIAL_RADIUS + INDICATOR_DISTANCE * Math.sin(rad) - INDICATOR_RADIUS;
+        return { left: x, top: y };
+    };
+
+    const onPointerDown = (e: React.PointerEvent) => {
+        dragging.current = true;
+        (e.target as HTMLElement).setPointerCapture(e.pointerId);
+        // Do NOT update the angle here to prevent jump
+    };
+
+    const onPointerMove = (e: React.PointerEvent) => {
+        if (!dragging.current) return;
+        const angle = getAngle(e.clientX, e.clientY);
+        setDegrees(angle);
+    };
+
+    const onPointerUp = (e: React.PointerEvent) => {
+        dragging.current = false;
+        (e.target as HTMLElement).releasePointerCapture(e.pointerId);
+    };
+
+    const indicatorPos = getIndicatorPosition(degrees);
+
     return (
         <div className={styles.dialWrapper}>
-            <div className={styles.dial}>
-                <span className={styles.dialValue}>{degrees}°</span>
+            <div
+                className={styles.dial}
+                ref={dialRef}
+                style={{ width: DIAL_SIZE, height: DIAL_SIZE, position: 'relative' }}
+            >
+                <span className={styles.dialValue}>{Math.round(degrees)}°</span>
                 <div
                     className={styles.dialIndicator}
-                    style={{ transform: `rotate(${indicatorAngle}deg) translateY(-110px)` }}
+                    style={{
+                        ...indicatorPos,
+                        position: 'absolute',
+                        width: INDICATOR_SIZE,
+                        height: INDICATOR_SIZE,
+                        cursor: 'pointer',
+                    }}
+                    onPointerDown={onPointerDown}
+                    onPointerMove={onPointerMove}
+                    onPointerUp={onPointerUp}
                 />
             </div>
             <div className={styles.dialLabel}>{label}</div>
