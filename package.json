@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@react-three/drei": "^10.2.0",
     "@tailwindcss/postcss": "^4.1.10",
     "next": "15.3.3",
     "react": "^19.0.0",
