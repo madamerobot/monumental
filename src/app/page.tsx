@@ -3,7 +3,6 @@
 import React, { useState } from 'react';
 import Preview from '../components/Preview';
 import UIControls from '../components/UIControls';
-import { useWebSocket } from './hooks/useWebSocket';
 import { RobotStateContext } from "./context/RobotStateContext";
 import { UIStateContext } from "./context/UIStateContext";
 import type { UIState } from './types/uiState';
@@ -40,18 +39,13 @@ export default function Page() {
 
   const [robotState, setRobotState] = useState<RobotState>(initialRobotState);
   const [uiState, setUIState] = useState<UIState>(initialUIState);
-  // Connect to WebSocket server
-  // const { send } = useWebSocket('ws://localhost:3000/api/ws');
-  const send = (msg: any) => {
-    console.log('🟢___ws', msg);
-  };
 
   return (
     <UIStateContext.Provider value={{ uiState, setUIState }}>
       <RobotStateContext.Provider value={{ robotState, setRobotState }}>
         <main>
           <Preview />
-          <UIControls sendCommand={send} />
+          <UIControls />
         </main>
       </RobotStateContext.Provider>
     </UIStateContext.Provider>
