@@ -1,55 +1,45 @@
 "use client"
 
-import React, { useRef, useState } from 'react';
+import React, { useRef } from 'react';
 import styles from './SliderInput.module.css';
 
 interface SliderInputProps {
     label: string;
-    position: string | number; // e.g. '30%' or 0.3
+    minValue: number;
+    maxValue: number;
+    value: number;
+    onChange: (newValue: number) => void;
 }
 
 const TRACK_HEIGHT = 180;
-const INDICATOR_SIZE = 22;
+const INDICATOR_SIZE = 24;
 
-export default function SliderInput({ label, position }: SliderInputProps) {
-    // Convert initial position to percent (0-100)
-    const initialPercent = typeof position === 'number'
-        ? position * 100
-        : parseFloat(position);
-    const [percent, setPercent] = useState(initialPercent);
+export default function SliderInput({ label, minValue, maxValue, value, onChange }: SliderInputProps) {
     const trackRef = useRef<HTMLDivElement>(null);
-    const dragging = useRef(false);
 
-    const clamp = (val: number, min: number, max: number) => Math.max(min, Math.min(max, val));
+    // Calculate the indicator's position as a percentage of the track
+    const percent = ((value - minValue) / (maxValue - minValue)) * 100;
+    const top = `calc(${percent}% - ${INDICATOR_SIZE / 2}px)`;
 
-    const getPercentFromY = (clientY: number) => {
-        const rect = trackRef.current?.getBoundingClientRect();
-        if (!rect) return percent;
-        let y = clientY - rect.top;
-        // Clamp y to [0, TRACK_HEIGHT]
-        y = clamp(y, 0, TRACK_HEIGHT);
-        // Convert y to percent (0 at top, 100 at bottom)
-        return (y / TRACK_HEIGHT) * 100;
-    };
-
-    const onPointerDown = (e: React.PointerEvent) => {
-        dragging.current = true;
+    // Handle drag
+    const handlePointerDown = (e: React.PointerEvent) => {
         (e.target as HTMLElement).setPointerCapture(e.pointerId);
     };
 
-    const onPointerMove = (e: React.PointerEvent) => {
-        if (!dragging.current) return;
-        const newPercent = getPercentFromY(e.clientY);
-        setPercent(newPercent);
+    const handlePointerMove = (e: React.PointerEvent) => {
+        if (!(e.buttons & 1)) return; // Only drag with left mouse button
+        const rect = trackRef.current?.getBoundingClientRect();
+        if (!rect) return;
+        let y = e.clientY - rect.top;
+        y = Math.max(0, Math.min(y, TRACK_HEIGHT));
+        const newPercent = y / TRACK_HEIGHT;
+        const newValue = Math.round(minValue + newPercent * (maxValue - minValue));
+        onChange(newValue);
     };
 
-    const onPointerUp = (e: React.PointerEvent) => {
-        dragging.current = false;
+    const handlePointerUp = (e: React.PointerEvent) => {
         (e.target as HTMLElement).releasePointerCapture(e.pointerId);
     };
-
-    // Calculate indicator position
-    const top = `calc(${percent}% - ${INDICATOR_SIZE / 2}px)`;
 
     return (
         <div className={styles.sliderWrapper}>
@@ -60,10 +50,16 @@ export default function SliderInput({ label, position }: SliderInputProps) {
             >
                 <div
                     className={styles.sliderIndicator}
-                    style={{ top, width: INDICATOR_SIZE, height: INDICATOR_SIZE, position: 'absolute', cursor: 'pointer' }}
-                    onPointerDown={onPointerDown}
-                    onPointerMove={onPointerMove}
-                    onPointerUp={onPointerUp}
+                    style={{
+                        top,
+                        width: INDICATOR_SIZE,
+                        height: INDICATOR_SIZE,
+                        position: 'absolute',
+                        cursor: 'pointer',
+                    }}
+                    onPointerDown={handlePointerDown}
+                    onPointerMove={handlePointerMove}
+                    onPointerUp={handlePointerUp}
                 />
             </div>
             <div className={styles.sliderLabel}>{label}</div>

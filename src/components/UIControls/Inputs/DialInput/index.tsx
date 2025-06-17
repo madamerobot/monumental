@@ -7,6 +7,7 @@ interface DialInputProps {
     degrees: number | string;
     label: string;
     indicatorAngle?: number; // in degrees
+    onChange: (value: number) => void;
 }
 
 const DIAL_SIZE = 180;
@@ -15,7 +16,7 @@ const INDICATOR_SIZE = 24;
 const INDICATOR_RADIUS = INDICATOR_SIZE / 2;
 const INDICATOR_DISTANCE = DIAL_RADIUS;
 
-export default function DialInput({ degrees: initialDegrees, label }: DialInputProps) {
+export default function DialInput({ degrees: initialDegrees, label, onChange }: DialInputProps) {
     const [degrees, setDegrees] = useState(Number(initialDegrees));
     const dialRef = useRef<HTMLDivElement>(null);
     const dragging = useRef(false);
@@ -51,6 +52,7 @@ export default function DialInput({ degrees: initialDegrees, label }: DialInputP
         if (!dragging.current) return;
         const angle = getAngle(e.clientX, e.clientY);
         setDegrees(angle);
+        onChange(angle);
     };
 
     const onPointerUp = (e: React.PointerEvent) => {
