@@ -9,4 +9,11 @@ export interface RobotState {
         y: number;
         z: number;
     }
+    trajectory: {
+        base: number;
+        lift: number;
+        elbow: number;
+        wrist: number;
+        gripper: number;
+    }[]
 }

@@ -9,11 +9,11 @@ import { PerspectiveCamera, OrbitControls, Center } from '@react-three/drei'
 import { Canvas } from '@react-three/fiber'
 import { RoboticArm } from '@/components/Preview/RoboticArm'
 
-export function Scene(props) {
+export function Scene() {
 
   return (
     <Canvas>
-      <ambientLight intensity={0.5} />
+      <ambientLight intensity={2} />
       <directionalLight
         position={[2, 5, 2]}
         intensity={1.2}
@@ -25,7 +25,7 @@ export function Scene(props) {
       <PerspectiveCamera makeDefault position={[0, 0, 15]} />
 
       <Center>
-        <RoboticArm position={[0, 0, 0]} rotation={[0, -1.7, 0]} />
+        <RoboticArm position={[0, 0, 0]} />
       </Center>
 
       {/* <OrbitControls /> */}

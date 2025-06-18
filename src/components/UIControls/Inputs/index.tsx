@@ -22,7 +22,7 @@ export default function Inputs({ sendCommand }: UIControlsProps) {
             <div className={styles.dialsSection}>
                 <DialInput
                     degrees={uiState.base}
-                    label="Swing"
+                    label="Base"
                     onChange={value => handleUpdateJoint('base', value)}
                 />
                 <DialInput
