@@ -12,7 +12,6 @@
     "@react-three/drei": "^10.2.0",
     "@tailwindcss/postcss": "^4.1.10",
     "dotenv": "^16.5.0",
-    "kinematics-js": "^1.0.8",
     "next": "15.3.3",
     "nodemon": "^3.1.10",
     "react": "^19.0.0",

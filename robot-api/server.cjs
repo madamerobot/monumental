@@ -1,17 +1,21 @@
 require('dotenv').config();
 
 const { Server } = require('ws');
-const { updateJoint } = require('./lib/joints.cjs');
-const { calculateIK, robotConfig } = require('./lib/inverseKinematics.cjs');
-// const { planTrajectory } = require('./lib/motion/trajectory.cjs');
-// const { trapezoidalProfile } = require('./lib/motion/trapezoidalProfile.cjs');
+const { moveRobot } = require('./lib/robotControl.cjs');
+const { returnMotionTrajectory } = require('./lib/motionTrajectory.cjs');
 
 const wss = new Server({ port: process.env.NEXT_PUBLIC_SOCKET_PORT });
 
 // Store current robot state
 let currentState = {
-    angles: [0, 0, 0], // Initial joint angles
-    position: { x: 0, y: 0, z: 0 } // Initial end-effector position
+    angles: {
+        base: 0,
+        lift: 0,
+        elbow: 0,
+        wrist: 0,
+        gripper: 0
+    },
+    position: { x: 0, y: 0, z: 0 }
 };
 
 wss.on('connection', (ws) => {
@@ -22,17 +26,48 @@ wss.on('connection', (ws) => {
             const { type, payload } = JSON.parse(message);
 
             if (type === 'updateJoint') {
-                // Direct joint update
-                const newAngles = updateJoint(currentState, payload.angles);
-                currentState.angles = newAngles;
-                console.log('🟢___newAngles, updateJoint', newAngles);
-                ws.send(JSON.stringify({ type: 'jointUpdate', payload: { angles: newAngles } }));
+                // Generate motion trajectory
+                const trajectory = returnMotionTrajectory(currentState, payload.angles);
+
+                // Update current state with final position
+                currentState.angles = trajectory[trajectory.length - 1].angles;
+
+                console.log('🟢___Trajectory generated:', trajectory.length, 'states');
+                console.log('🟢___First state:', trajectory[0].angles);
+                console.log('🟢___Last state:', trajectory[trajectory.length - 1].angles);
+
+                // Send the entire trajectory to the client
+                ws.send(JSON.stringify({
+                    type: 'jointUpdate',
+                    payload: {
+                        trajectory,
+                        finalAngles: currentState.angles
+                    }
+                }));
             } else if (type === 'updatePose') {
-                // IK for pose
-                const newAngles = calculateIK(payload.x, payload.y, payload.z, robotConfig);
-                currentState.angles = newAngles;
-                console.log('🟢___newAngles, updatePose', newAngles);
-                ws.send(JSON.stringify({ type: 'poseUpdate', payload: { angles: newAngles } }));
+                // Calculate IK for the target position
+                const targetAngles = moveRobot(payload);
+
+                // Generate motion trajectory
+                const trajectory = returnMotionTrajectory(currentState, targetAngles);
+
+                // Update current state
+                currentState.angles = trajectory[trajectory.length - 1].angles;
+                currentState.position = payload;
+
+                console.log('🟢___Trajectory generated for pose:', trajectory.length, 'states');
+                console.log('🟢___First state:', trajectory[0].angles);
+                console.log('🟢___Last state:', trajectory[trajectory.length - 1].angles);
+
+                // Send the trajectory to the client
+                ws.send(JSON.stringify({
+                    type: 'poseUpdate',
+                    payload: {
+                        trajectory,
+                        finalAngles: currentState.angles,
+                        position: currentState.position
+                    }
+                }));
             }
         } catch (error) {
             console.error('Error processing message:', error);
@@ -50,10 +85,7 @@ wss.on('connection', (ws) => {
     // Send initial state
     ws.send(JSON.stringify({
         type: 'init',
-        payload: {
-            state: currentState,
-            config: robotConfig
-        }
+        payload: { state: currentState }
     }));
 });
 

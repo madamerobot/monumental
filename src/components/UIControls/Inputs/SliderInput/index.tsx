@@ -17,8 +17,11 @@ const INDICATOR_SIZE = 24;
 export default function SliderInput({ label, minValue, maxValue, value, onChange }: SliderInputProps) {
     const trackRef = useRef<HTMLDivElement>(null);
 
+    // Ensure value is rounded
+    const roundedValue = Math.round(value);
+
     // Calculate the indicator's position as a percentage of the track
-    const percent = ((value - minValue) / (maxValue - minValue)) * 100;
+    const percent = ((roundedValue - minValue) / (maxValue - minValue)) * 100;
     const top = `calc(${percent}% - ${INDICATOR_SIZE / 2}px)`;
 
     // Handle drag
@@ -63,6 +66,7 @@ export default function SliderInput({ label, minValue, maxValue, value, onChange
                 />
             </div>
             <div className={styles.sliderLabel}>{label}</div>
+            <div className={styles.sliderValue}>{roundedValue}</div>
         </div>
     );
 }

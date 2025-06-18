@@ -17,7 +17,7 @@ const INDICATOR_RADIUS = INDICATOR_SIZE / 2;
 const INDICATOR_DISTANCE = DIAL_RADIUS;
 
 export default function DialInput({ degrees: initialDegrees, label, onChange }: DialInputProps) {
-    const [degrees, setDegrees] = useState(Number(initialDegrees));
+    const [degrees, setDegrees] = useState(Math.round(Number(initialDegrees)));
     const dialRef = useRef<HTMLDivElement>(null);
     const dragging = useRef(false);
 
@@ -32,7 +32,7 @@ export default function DialInput({ degrees: initialDegrees, label, onChange }: 
         let angle = Math.atan2(dy, dx) * (180 / Math.PI);
         angle = angle + 90;
         if (angle < 0) angle += 360;
-        return angle;
+        return Math.round(angle); // Round to nearest integer
     };
 
     // Calculate indicator position from degrees
@@ -69,7 +69,7 @@ export default function DialInput({ degrees: initialDegrees, label, onChange }: 
                 ref={dialRef}
                 style={{ width: DIAL_SIZE, height: DIAL_SIZE, position: 'relative' }}
             >
-                <span className={styles.dialValue}>{Math.round(degrees)}°</span>
+                <span className={styles.dialValue}>{degrees}°</span>
                 <div
                     className={styles.dialIndicator}
                     style={{
