@@ -31,8 +31,8 @@ export function RoboticArm({ position }: RoboticArmProps) {
 
   // Hardcoded values for now
   const baseRotation = robotState.base; // degrees
-  const elbowRotation = 20; // degrees
-  const wristRotation = 10; // degrees
+  const elbowRotation = robotState.elbow; // degrees
+  const wristRotation = robotState.wrist; // degrees
   const shoulderRotation = -90; // degrees, hardcode for now
 
   // Create different colored materials for each joint
@@ -42,7 +42,7 @@ export function RoboticArm({ position }: RoboticArmProps) {
   const yellowMaterial = new THREE.MeshStandardMaterial({ color: 'yellow', transparent: true, opacity: 0.5 })
 
   return (
-    <group ref={group} rotation={[0, baseRotation, 0]} position={[position[0], position[1], position[2]]} dispose={null} >
+    <group ref={group} rotation={[0, toRadians(baseRotation), 0]} position={[position[0], position[1], position[2]]} dispose={null} >
       <group name="Object_5" rotation={[toRadians(-90), 0, toRadians(0)]}>
         <group name="Bone006_07" position={[0, 4.562, 5.244]} />
       </group>

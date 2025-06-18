@@ -38,22 +38,6 @@ export default function Inputs({ sendCommand }: UIControlsProps) {
                     onChange={(value, isFinished) => handleUpdateJoint('wrist', value, isFinished)}
                 />
             </div>
-            <div className={styles.slidersSection}>
-                <SliderInput
-                    label="Lift"
-                    minValue={0}
-                    maxValue={100}
-                    value={uiState.lift}
-                    onChange={(newValue, isFinished) => handleUpdateJoint('lift', newValue, isFinished)}
-                />
-                <SliderInput
-                    label="Gripper"
-                    minValue={0}
-                    maxValue={100}
-                    value={uiState.gripper}
-                    onChange={(newValue, isFinished) => handleUpdateJoint('gripper', newValue, isFinished)}
-                />
-            </div>
             <div className={styles.coordinatesSection}>
                 <div className={styles.coordinatesWrapper}>
                     <div className={styles.coordinatesValues}>

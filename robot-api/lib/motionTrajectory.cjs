@@ -7,6 +7,18 @@
  * @param {number} options.duration - Total duration of motion in ms (default: 1000)
  * @returns {Object[]} Array of states with timestamps and angles
  */
+
+// Helper function to normalize angle to -180 to 180 range
+function normalizeAngle(angle) {
+    return ((angle + 180) % 360 + 360) % 360 - 180;
+}
+
+// Helper function to find shortest path between two angles
+function shortestAnglePath(current, target) {
+    const diff = normalizeAngle(target - current);
+    return diff;
+}
+
 function returnMotionTrajectory(currentState, targetAngles, options = {}) {
     const {
         interval = 50,    // 50ms between states
@@ -47,17 +59,19 @@ function returnMotionTrajectory(currentState, targetAngles, options = {}) {
             }
 
             const currentAngle = currentState.angles[joint];
-            // Linear interpolation with easing
-            const interpolatedAngle = Math.round(currentAngle + (targetAngle - currentAngle) * easedProgress);
-            state.angles[joint] = interpolatedAngle;
+            // Find shortest path and interpolate along it
+            const shortestPath = shortestAnglePath(currentAngle, targetAngle);
+            const interpolatedAngle = Math.round(currentAngle + shortestPath * easedProgress);
+            state.angles[joint] = normalizeAngle(interpolatedAngle);
 
             // Debug log for first and last state
             if (currentTime === interval || currentTime >= duration - interval) {
                 console.log(`🟡 ${joint} at ${currentTime}ms:`, {
                     current: currentAngle,
                     target: targetAngle,
+                    shortestPath,
                     progress: easedProgress,
-                    interpolated: interpolatedAngle
+                    interpolated: state.angles[joint]
                 });
             }
         }
