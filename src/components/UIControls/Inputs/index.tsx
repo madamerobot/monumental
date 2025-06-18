@@ -9,7 +9,7 @@ export default function Inputs({ sendCommand }: UIControlsProps) {
 
     const handleUpdateJoint = (joint: string, value: number) => {
         setUIState({ ...uiState, [joint]: value });
-        sendCommand({ type: 'updateJoint', payload: { state: uiState } });
+        sendCommand({ type: 'updateJoint', payload: { angles: uiState } });
     };
 
     const handleUpdatePose = (x: number, y: number, z: number) => {
