@@ -34,7 +34,11 @@
     "**/*.tsx",
     ".next/types/**/*.ts",
     "src/lib/motion/inverseKinematics.ts",
-    "socket-server.js"
+    "socket-server.js",
+    "robot-api/lib/trapezoidalProfile.cjs",
+    "robot-api/lib/trajectory.cjs",
+    "robot-api/lib/joints.cjs",
+    "robot-api/lib/inverseKinematics.cjs"
   ],
   "exclude": [
     "node_modules"

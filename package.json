@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev & nodemon server/socket-server.cjs",
+    "dev": "next dev & nodemon robot-api/server.cjs",
     "build": "next build",
     "start": "next start",
     "lint": "next lint"
@@ -12,12 +12,11 @@
     "@react-three/drei": "^10.2.0",
     "@tailwindcss/postcss": "^4.1.10",
     "dotenv": "^16.5.0",
-    "inverse-kinematics": "^0.1.3",
+    "kinematics-js": "^1.0.8",
     "next": "15.3.3",
     "nodemon": "^3.1.10",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
-    "ts-kinematics": "^0.1.4",
     "ws": "^8.18.2"
   },
   "devDependencies": {

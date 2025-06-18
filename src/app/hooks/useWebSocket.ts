@@ -26,13 +26,13 @@ export function useWebSocket() {
 
     // Function to send a message
     const send = useCallback((msg: any) => {
-        console.log({ ws: ws.current })
 
         if (ws.current && ws.current.readyState === WebSocket.OPEN) {
             ws.current.send(JSON.stringify(msg));
         } else {
             // Optionally: queue the message, show an error, or reconnect
             console.warn('WebSocket is not open. Message not sent.');
+            // update SystemHealth context with error
         }
     }, []);
 
