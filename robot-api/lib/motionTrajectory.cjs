@@ -25,9 +25,6 @@ function returnMotionTrajectory(currentState, targetAngles, options = {}) {
         duration = 1000   // 1 second total duration
     } = options;
 
-    console.log('🟡 Current State:', currentState.angles);
-    console.log('🟡 Target Angles:', targetAngles);
-
     // Generate states at regular intervals
     const states = [];
     let currentTime = 0;
@@ -63,17 +60,6 @@ function returnMotionTrajectory(currentState, targetAngles, options = {}) {
             const shortestPath = shortestAnglePath(currentAngle, targetAngle);
             const interpolatedAngle = Math.round(currentAngle + shortestPath * easedProgress);
             state.angles[joint] = normalizeAngle(interpolatedAngle);
-
-            // Debug log for first and last state
-            if (currentTime === interval || currentTime >= duration - interval) {
-                console.log(`🟡 ${joint} at ${currentTime}ms:`, {
-                    current: currentAngle,
-                    target: targetAngle,
-                    shortestPath,
-                    progress: easedProgress,
-                    interpolated: state.angles[joint]
-                });
-            }
         }
 
         states.push(state);
@@ -84,10 +70,6 @@ function returnMotionTrajectory(currentState, targetAngles, options = {}) {
         timestamp: duration,
         angles: { ...targetAngles }
     });
-
-    // Log first and last states
-    console.log('🟡 First state:', states[0].angles);
-    console.log('🟡 Last state:', states[states.length - 1].angles);
 
     return states;
 }
