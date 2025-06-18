@@ -1,5 +1,6 @@
 import { useEffect, useRef, useCallback, useState } from 'react';
 import { useRobotState } from '../context/RobotStateContext';
+import type { RobotState } from '../types/robotState';
 
 export function useWebSocket() {
     const wsUrl = process.env.NEXT_PUBLIC_WS_URL || 'ws://localhost:3001';
@@ -14,9 +15,23 @@ export function useWebSocket() {
         ws.current.onopen = () => setIsOpen(true);
         ws.current.onclose = () => setIsOpen(false);
         ws.current.onmessage = (event) => {
-            const data = JSON.parse(event.data);
-            // Update robot state with new joint angles
-            setRobotState(data);
+            const { type, payload } = JSON.parse(event.data);
+
+            switch (type) {
+                case 'init':
+                case 'jointUpdate':
+                    // Update robot state with new joint angles
+                    setRobotState((prevState: RobotState) => ({
+                        ...prevState,
+                        ...payload
+                    }));
+                    break;
+                case 'error':
+                    console.error('WebSocket error:', payload.message);
+                    break;
+                default:
+                    console.warn('Unknown message type:', type);
+            }
         };
 
         return () => {

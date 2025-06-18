@@ -26,18 +26,11 @@ export function RoboticArm({ position }: RoboticArmProps) {
   // const { actions } = useAnimations(animations, group)
   const { robotState } = useRobotState()
 
-  const [currentAngles, setCurrentAngles] = useState({ base: 0, elbow: 0, wrist: 0 })
-
-  const trajectoryRef = useRef<{ base: number; lift: number; elbow: number; wrist: number; gripper: number }[]>([])
-  const currentIndexRef = useRef(0)
-
   // Helper function to convert degrees to radians
   const toRadians = (degrees: number) => degrees * (Math.PI / 180)
 
-  console.log('robotState', robotState)
-
   // Hardcoded values for now
-  const baseRotation = 45; // degrees
+  const baseRotation = robotState.base; // degrees
   const elbowRotation = 20; // degrees
   const wristRotation = 10; // degrees
   const shoulderRotation = -90; // degrees, hardcode for now
@@ -48,35 +41,11 @@ export function RoboticArm({ position }: RoboticArmProps) {
   const greenMaterial = new THREE.MeshStandardMaterial({ color: 'green', transparent: true, opacity: 0.5 })
   const yellowMaterial = new THREE.MeshStandardMaterial({ color: 'yellow', transparent: true, opacity: 0.5 })
 
-  // useEffect(() => {
-  //   if (robotState?.trajectory) {
-  //     trajectoryRef.current = robotState.trajectory
-  //     currentIndexRef.current = 0
-  //     setCurrentAngles(robotState.trajectory[0].angles)
-  //   }
-  // }, [robotState?.trajectory])
-
-  // useEffect(() => {
-  //   if (!trajectoryRef.current) return
-
-  //   const interval = setInterval(() => {
-  //     if (currentIndexRef.current < trajectoryRef.current.length - 1) {
-  //       currentIndexRef.current++
-  //       setCurrentAngles(trajectoryRef.current[currentIndexRef.current].angles)
-  //     } else {
-  //       clearInterval(interval)
-  //     }
-  //   }, 50) // Match the interval from motionTrajectory
-
-  //   return () => clearInterval(interval)
-  // }, [robotState?.trajectory])
-
   return (
     <group ref={group} rotation={[0, baseRotation, 0]} position={[position[0], position[1], position[2]]} dispose={null} >
-      {/* <group name="Object_5" rotation={[toRadians(-90), 0, toRadians(0)]}>
-        <mesh material={redMaterial} geometry={nodes.Cylinder010_Material_0.geometry} />
+      <group name="Object_5" rotation={[toRadians(-90), 0, toRadians(0)]}>
         <group name="Bone006_07" position={[0, 4.562, 5.244]} />
-      </group> */}
+      </group>
       < group name="Crane" >
         <group name="Bone001_01" position={[0, 0.864, 0]}>
           <mesh material={blueMaterial} geometry={nodes.Cylinder011_Material_0.geometry} />
@@ -84,7 +53,6 @@ export function RoboticArm({ position }: RoboticArmProps) {
 
             <group name="Bone003_03" position={[0, 3.064, 0]} rotation={[toRadians(-90), 0, toRadians(elbowRotation)]}>
               <group name="Bone004_04" position={[0, 4.2, 0]} rotation={[toRadians(-77), 0, toRadians(wristRotation)]}>
-
                 <mesh material={yellowMaterial} geometry={nodes.Cylinder015_Material_0.geometry} />
                 <group name="Cylinder015">
                   <mesh name="Cylinder015_Material_0" geometry={nodes.Cylinder015_Material_0.geometry} material={materials.Material} />

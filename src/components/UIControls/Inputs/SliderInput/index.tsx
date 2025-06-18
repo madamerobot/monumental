@@ -8,7 +8,7 @@ interface SliderInputProps {
     minValue: number;
     maxValue: number;
     value: number;
-    onChange: (newValue: number) => void;
+    onChange: (newValue: number, isFinished: boolean) => void;
 }
 
 const TRACK_HEIGHT = 180;
@@ -37,11 +37,12 @@ export default function SliderInput({ label, minValue, maxValue, value, onChange
         y = Math.max(0, Math.min(y, TRACK_HEIGHT));
         const newPercent = y / TRACK_HEIGHT;
         const newValue = Math.round(minValue + newPercent * (maxValue - minValue));
-        onChange(newValue);
+        onChange(newValue, false);
     };
 
     const handlePointerUp = (e: React.PointerEvent) => {
         (e.target as HTMLElement).releasePointerCapture(e.pointerId);
+        onChange(roundedValue, true);
     };
 
     return (

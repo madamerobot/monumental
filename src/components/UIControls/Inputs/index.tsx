@@ -7,9 +7,11 @@ import type { UIControlsProps } from '../index';
 export default function Inputs({ sendCommand }: UIControlsProps) {
     const { uiState, setUIState } = useUIState();
 
-    const handleUpdateJoint = (joint: string, value: number) => {
+    const handleUpdateJoint = (joint: string, value: number, isFinished: boolean = false) => {
         setUIState({ ...uiState, [joint]: value });
-        sendCommand({ type: 'updateJoint', payload: { angles: uiState } });
+        if (isFinished) {
+            sendCommand({ type: 'updateJoint', payload: { angles: { ...uiState, [joint]: value } } });
+        }
     };
 
     const handleUpdatePose = (x: number, y: number, z: number) => {
@@ -23,22 +25,34 @@ export default function Inputs({ sendCommand }: UIControlsProps) {
                 <DialInput
                     degrees={uiState.base}
                     label="Base"
-                    onChange={value => handleUpdateJoint('base', value)}
+                    onChange={(value, isFinished) => handleUpdateJoint('base', value, isFinished)}
                 />
                 <DialInput
                     degrees={uiState.elbow}
                     label="Elbow"
-                    onChange={value => handleUpdateJoint('elbow', value)}
+                    onChange={(value, isFinished) => handleUpdateJoint('elbow', value, isFinished)}
                 />
                 <DialInput
                     degrees={uiState.wrist}
                     label="Wrist"
-                    onChange={value => handleUpdateJoint('wrist', value)}
+                    onChange={(value, isFinished) => handleUpdateJoint('wrist', value, isFinished)}
                 />
             </div>
             <div className={styles.slidersSection}>
-                <SliderInput label="Lift" minValue={0} maxValue={100} value={uiState.lift} onChange={newValue => handleUpdateJoint('lift', newValue)} />
-                <SliderInput label="Gripper" minValue={0} maxValue={100} value={uiState.gripper} onChange={newValue => handleUpdateJoint('gripper', newValue)} />
+                <SliderInput
+                    label="Lift"
+                    minValue={0}
+                    maxValue={100}
+                    value={uiState.lift}
+                    onChange={(newValue, isFinished) => handleUpdateJoint('lift', newValue, isFinished)}
+                />
+                <SliderInput
+                    label="Gripper"
+                    minValue={0}
+                    maxValue={100}
+                    value={uiState.gripper}
+                    onChange={(newValue, isFinished) => handleUpdateJoint('gripper', newValue, isFinished)}
+                />
             </div>
             <div className={styles.coordinatesSection}>
                 <div className={styles.coordinatesWrapper}>

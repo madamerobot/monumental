@@ -6,7 +6,7 @@ const { returnMotionTrajectory } = require('./lib/motionTrajectory.cjs');
 
 const wss = new Server({ port: process.env.NEXT_PUBLIC_SOCKET_PORT });
 
-// Store current robot state
+// Store current robot state and active intervals
 let currentState = {
     angles: {
         base: 0,
@@ -18,6 +18,9 @@ let currentState = {
     position: { x: 0, y: 0, z: 0 }
 };
 
+// Map to store active intervals for each client
+const clientIntervals = new Map();
+
 wss.on('connection', (ws) => {
     console.log('New client connected');
 
@@ -26,48 +29,37 @@ wss.on('connection', (ws) => {
             const { type, payload } = JSON.parse(message);
 
             if (type === 'updateJoint') {
+                // Clear any existing interval for this client
+                if (clientIntervals.has(ws)) {
+                    clearInterval(clientIntervals.get(ws));
+                    clientIntervals.delete(ws);
+                }
+
                 // Generate motion trajectory
                 const trajectory = returnMotionTrajectory(currentState, payload.angles);
+                let currentIndex = 0;
 
-                // Update current state with final position
-                currentState.angles = trajectory[trajectory.length - 1].angles;
+                // Start sending incremental updates
+                const interval = setInterval(() => {
+                    if (currentIndex < trajectory.length) {
+                        // Send current state
+                        ws.send(JSON.stringify({
+                            type: 'jointUpdate',
+                            payload: { ...trajectory[currentIndex].angles }
+                        }));
 
-                console.log('🟢___Trajectory generated:', trajectory.length, 'states');
-                console.log('🟢___First state:', trajectory[0].angles);
-                console.log('🟢___Last state:', trajectory[trajectory.length - 1].angles);
-
-                // Send the entire trajectory to the client
-                ws.send(JSON.stringify({
-                    type: 'jointUpdate',
-                    payload: {
-                        trajectory,
-                        finalAngles: currentState.angles
+                        // Update current state
+                        currentState.angles = trajectory[currentIndex].angles;
+                        currentIndex++;
+                    } else {
+                        // Clean up when trajectory is complete
+                        clearInterval(interval);
+                        clientIntervals.delete(ws);
                     }
-                }));
-            } else if (type === 'updatePose') {
-                // Calculate IK for the target position
-                const targetAngles = moveRobot(payload);
+                }, 50); // Match the interval from motionTrajectory
 
-                // Generate motion trajectory
-                const trajectory = returnMotionTrajectory(currentState, targetAngles);
-
-                // Update current state
-                currentState.angles = trajectory[trajectory.length - 1].angles;
-                currentState.position = payload;
-
-                console.log('🟢___Trajectory generated for pose:', trajectory.length, 'states');
-                console.log('🟢___First state:', trajectory[0].angles);
-                console.log('🟢___Last state:', trajectory[trajectory.length - 1].angles);
-
-                // Send the trajectory to the client
-                ws.send(JSON.stringify({
-                    type: 'poseUpdate',
-                    payload: {
-                        trajectory,
-                        finalAngles: currentState.angles,
-                        position: currentState.position
-                    }
-                }));
+                // Store the interval reference
+                clientIntervals.set(ws, interval);
             }
         } catch (error) {
             console.error('Error processing message:', error);
@@ -79,13 +71,18 @@ wss.on('connection', (ws) => {
     });
 
     ws.on('close', () => {
+        // Clean up interval when client disconnects
+        if (clientIntervals.has(ws)) {
+            clearInterval(clientIntervals.get(ws));
+            clientIntervals.delete(ws);
+        }
         console.log('Client disconnected');
     });
 
     // Send initial state
     ws.send(JSON.stringify({
         type: 'init',
-        payload: { state: currentState }
+        payload: { ...currentState.angles }
     }));
 });
 
