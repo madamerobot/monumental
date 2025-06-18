@@ -13,15 +13,12 @@ export function Scene() {
 
   return (
     <Canvas>
-      <ambientLight intensity={2} />
+      <ambientLight color="white" intensity={2} />
       <directionalLight
-        position={[2, 5, 2]}
-        intensity={1.2}
-        castShadow
-        shadow-mapSize-width={2048}
-        shadow-mapSize-height={2048}
+        color="white"
+        intensity={2}
       />
-      <pointLight position={[-2, -2, 2]} intensity={0.5} />
+      {/* <pointLight position={[-2, -2, 2]} intensity={2} /> */}
       <PerspectiveCamera makeDefault position={[0, 0, 15]} />
 
       <Center>

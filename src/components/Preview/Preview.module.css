@@ -1,7 +1,6 @@
 .previewContainer {
-    width: 100vw;
+    width: 50%;
     height: 100vh;
-    background: lightgray;
+    background: black;
     border-radius: 0;
-    /* cursor: grab; */
 }

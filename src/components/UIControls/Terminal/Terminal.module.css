@@ -4,17 +4,19 @@
     align-items: center;
     justify-content: center;
     background: #d6d6d6;
-    padding: 0 24px;
+    padding: 30px;
     border-radius: 0;
     font-family: 'Satoshi', Arial, Helvetica, sans-serif;
+    overflow: hidden;
+    height: 40%;
 }
 
 .terminal {
     background: #BFBFBF;
     border-radius: 9px;
     width: 100%;
-    height: auto;
-    min-height: 100px;
+    height: 100%;
+    overflow: scroll;
 }
 
 .terminalMessage {

@@ -36,24 +36,21 @@ export function RoboticArm({ position }: RoboticArmProps) {
   const shoulderRotation = -90; // degrees, hardcode for now
 
   // Create different colored materials for each joint
-  const redMaterial = new THREE.MeshStandardMaterial({ color: 'red', transparent: true, opacity: 0.5 })
-  const blueMaterial = new THREE.MeshStandardMaterial({ color: 'blue', transparent: true, opacity: 0.5 })
-  const greenMaterial = new THREE.MeshStandardMaterial({ color: 'green', transparent: true, opacity: 0.5 })
-  const yellowMaterial = new THREE.MeshStandardMaterial({ color: 'yellow', transparent: true, opacity: 0.5 })
+  // const redMaterial = new THREE.MeshStandardMaterial({ color: 'red', transparent: true, opacity: 0.5 })
+  // const blueMaterial = new THREE.MeshStandardMaterial({ color: 'blue', transparent: true, opacity: 0.5 })
+  // const greenMaterial = new THREE.MeshStandardMaterial({ color: 'green', transparent: true, opacity: 0.5 })
+  // const yellowMaterial = new THREE.MeshStandardMaterial({ color: 'yellow', transparent: true, opacity: 0.5 })
 
   return (
     <group ref={group} rotation={[0, toRadians(baseRotation), 0]} position={[position[0], position[1], position[2]]} dispose={null} >
       <group name="Object_5" rotation={[toRadians(-90), 0, toRadians(0)]}>
         <group name="Bone006_07" position={[0, 4.562, 5.244]} />
       </group>
-      < group name="Crane" >
+      < group name="Bone_00" >
         <group name="Bone001_01" position={[0, 0.864, 0]}>
-          <mesh material={blueMaterial} geometry={nodes.Cylinder011_Material_0.geometry} />
           <group name="Bone002_02" position={[0, 2.872, 0]}>
-
             <group name="Bone003_03" position={[0, 3.064, 0]} rotation={[toRadians(-90), 0, toRadians(elbowRotation)]}>
               <group name="Bone004_04" position={[0, 4.2, 0]} rotation={[toRadians(-77), 0, toRadians(wristRotation)]}>
-                <mesh material={yellowMaterial} geometry={nodes.Cylinder015_Material_0.geometry} />
                 <group name="Cylinder015">
                   <mesh name="Cylinder015_Material_0" geometry={nodes.Cylinder015_Material_0.geometry} material={materials.Material} />
                 </group>
@@ -85,7 +82,6 @@ export function RoboticArm({ position }: RoboticArmProps) {
               </group>
             </group>
             <group name="Cylinder013" position={[0, -0.036, 0]} rotation={[toRadians(shoulderRotation), 0, 0]}>
-              <mesh material={greenMaterial} geometry={nodes.Cylinder013_Material_0.geometry} />
               <mesh name="Cylinder013_Material_0" geometry={nodes.Cylinder013_Material_0.geometry} material={materials.Material} />
             </group>
             <group name="Cylinder017" position={[0, 0.863, -0.906]} rotation={[toRadians(-90), 0, 0]}>
@@ -101,7 +97,7 @@ export function RoboticArm({ position }: RoboticArmProps) {
         </group>
       </group >
       {/* <-- base --> */}
-      < mesh name="Base" geometry={nodes.Cylinder010_Material_0.geometry} material={materials.Material} position={[0, 0.5, 0]} rotation={[toRadians(-90), 0, 0]} />
+      < mesh name="Cylinder010_Material_0" geometry={nodes.Cylinder010_Material_0.geometry} material={materials.Material} position={[0, 0.5, 0]} rotation={[toRadians(-90), 0, 0]} />
       {/* <-- end base --> */}
     </group >
   )

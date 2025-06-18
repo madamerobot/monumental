@@ -36,7 +36,7 @@ wss.on('connection', (ws) => {
                 }
 
                 // Generate motion trajectory
-                const trajectory = returnMotionTrajectory(currentState, payload.angles);
+                const trajectory = returnMotionTrajectory(currentState, payload);
                 let currentIndex = 0;
 
                 // Start sending incremental updates

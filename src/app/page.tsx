@@ -43,10 +43,14 @@ export default function Page() {
   return (
     <UIStateContext.Provider value={{ uiState, setUIState }}>
       <RobotStateContext.Provider value={{ robotState, setRobotState }}>
+
         <main>
-          <Preview />
-          <UIControls />
+          <div className="wrapper">
+            <Preview />
+            <UIControls />
+          </div>
         </main>
+
       </RobotStateContext.Provider>
     </UIStateContext.Provider>
 
