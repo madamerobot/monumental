@@ -1,0 +1,2 @@
+# Exclude robot-api directory from ESLint
+robot-api/ 

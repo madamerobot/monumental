@@ -32,6 +32,13 @@ export function useWebSocket() {
                         ...payload
                     }));
                     break;
+                case 'poseUpdate':
+                    // Update robot state with new joint angles
+                    setRobotState((prevState: RobotState) => ({
+                        ...prevState,
+                        ...payload
+                    }));
+                    break;
                 case 'error':
                     setSystemState({ errors: [...systemState.errors, `WebSocket error: ${payload.message}`], webSocketConnection: 'error' })
                     break;

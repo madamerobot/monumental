@@ -1,8 +1,8 @@
 require('dotenv').config();
 
 const { Server } = require('ws');
-const { moveRobot } = require('./lib/robotControl.cjs');
 const { returnMotionTrajectory } = require('./lib/motionTrajectory.cjs');
+const { returnInverseKinematics } = require('./lib/inverseKinematics.cjs')
 
 const wss = new Server({ port: process.env.NEXT_PUBLIC_SOCKET_PORT });
 
@@ -61,6 +61,35 @@ wss.on('connection', (ws) => {
                 // Store the interval reference
                 clientIntervals.set(ws, interval);
             }
+            if (type === 'updatePose') {
+                const targetState = returnInverseKinematics(currentState, payload);
+                const motionTrajectory = returnMotionTrajectory(currentState, targetState);
+
+                let currentIndex = 0;
+
+                // Start sending incremental updates
+                const interval = setInterval(() => {
+                    if (currentIndex < motionTrajectory.length) {
+                        // Send current state
+                        ws.send(JSON.stringify({
+                            type: 'poseUpdate',
+                            payload: { ...motionTrajectory[currentIndex].angles }
+                        }));
+
+                        // Update current state
+                        currentState.angles = motionTrajectory[currentIndex].angles;
+                        currentIndex++;
+                    } else {
+                        // Clean up when trajectory is complete
+                        clearInterval(interval);
+                        clientIntervals.delete(ws);
+                    }
+                }, 50);
+
+                // Store the interval reference
+                clientIntervals.set(ws, interval);
+
+            }
         } catch (error) {
             console.error('Error processing message:', error);
             ws.send(JSON.stringify({
@@ -68,6 +97,8 @@ wss.on('connection', (ws) => {
                 payload: { message: error.message }
             }));
         }
+
+
     });
 
     ws.on('close', () => {

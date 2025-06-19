@@ -14,9 +14,28 @@ export default function Inputs({ sendCommand }: UIControlsProps) {
         }
     };
 
-    const handleUpdatePose = (x: number, y: number, z: number) => {
+    const handleUpdatePose = (x: number, y: number, z: number, isFinished: boolean = false) => {
         setUIState({ ...uiState, position: { x, y, z } });
-        sendCommand({ type: 'updatePose', payload: { x, y, z } });
+
+        // To DO: Update isFinished on MouseUp
+        if (isFinished) {
+            sendCommand({ type: 'updatePose', payload: { x, y, z } });
+        }
+    };
+
+    const handleXChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        const value = parseFloat(event.target.value) || 0;
+        handleUpdatePose(value, uiState.position.y, uiState.position.z, true);
+    };
+
+    const handleYChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        const value = parseFloat(event.target.value) || 0;
+        handleUpdatePose(uiState.position.x, value, uiState.position.z, true);
+    };
+
+    const handleZChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        const value = parseFloat(event.target.value) || 0;
+        handleUpdatePose(uiState.position.x, uiState.position.y, value, true);
     };
 
     return (
@@ -41,14 +60,38 @@ export default function Inputs({ sendCommand }: UIControlsProps) {
             <div className={styles.coordinatesSection}>
                 <div className={styles.coordinatesWrapper}>
                     <div className={styles.coordinatesValues}>
-                        <div>100</div>
-                        <div>130</div>
-                        <div>130</div>
+                        <div>
+                            <input
+                                type="number"
+                                defaultValue={uiState.position.x}
+                                aria-label="xPos"
+                                name="xPos"
+                                onChange={handleXChange}
+                            />
+                        </div>
+                        <div>
+                            <input
+                                type="number"
+                                defaultValue={uiState.position.y}
+                                aria-label="yPos"
+                                name="yPos"
+                                onChange={handleYChange}
+                            />
+                        </div>
+                        <div>
+                            <input
+                                type="number"
+                                defaultValue={uiState.position.z}
+                                aria-label="zPos"
+                                name="zPos"
+                                onChange={handleZChange}
+                            />
+                        </div>
                     </div>
                     <div className={styles.coordinatesCircle} />
                 </div>
                 <div className={styles.coordinatesLabel}>Coordinates</div>
             </div>
-        </div>
+        </div >
     );
 }

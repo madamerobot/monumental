@@ -32,15 +32,10 @@
     "next-env.d.ts",
     "**/*.ts",
     "**/*.tsx",
-    ".next/types/**/*.ts",
-    "src/lib/motion/inverseKinematics.ts",
-    "socket-server.js",
-    "robot-api/lib/trapezoidalProfile.cjs",
-    "robot-api/lib/trajectory.cjs",
-    "robot-api/lib/joints.cjs",
-    "robot-api/lib/inverseKinematics.cjs"
+    ".next/types/**/*.ts"
   ],
   "exclude": [
-    "node_modules"
+    "node_modules",
+    "robot-api"
   ]
 }

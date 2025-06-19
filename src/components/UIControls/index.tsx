@@ -16,7 +16,10 @@ export default function UIControls() {
     return (
         <div className={styles.uiContainer}>
             <Inputs sendCommand={send} />
-            <Terminal message={systemState.errors.length ? JSON.stringify(systemState.errors) : 'All systems operational'} wsConnection={systemState.webSocketConnection} />
+            <Terminal
+                message={systemState.errors.length ? JSON.stringify(systemState.errors) : 'All systems operational'}
+                wsConnection={systemState.webSocketConnection}
+            />
         </div>
     )
 } 
