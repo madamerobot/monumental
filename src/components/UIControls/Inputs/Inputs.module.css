@@ -1,12 +1,15 @@
+.layoutWrapper {
+    display: flex;
+}
+
 .inputsContainer {
-    height: 60%;
+    height: 50%;
     display: flex;
     flex-direction: column;
     align-items: space-between;
     justify-content: space-between;
     gap: 22px;
-    background: #d6d6d6;
-    padding: 30px;
+    padding: 80px;
     border-radius: 0;
     font-family: 'Satoshi', Arial, Helvetica, sans-serif;
 }
@@ -17,55 +20,9 @@
     gap: 10px;
 }
 
-.slidersSection {
-    display: flex;
-    flex-direction: row;
-    gap: 32px;
-    align-items: flex-end;
-}
-
-.coordinatesSection {
+.sliderSection {
     display: flex;
     flex-direction: column;
-    align-items: center;
-    width: 100%;
-    /* margin-left: 22px; */
-}
-
-.coordinatesValues {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-end;
-    font-size: 48px;
-    font-weight: 400;
-    color: #111;
-    margin-bottom: 8px;
-    line-height: 1;
-}
-
-.coordinatesCircle {
-    width: 140px;
-    height: 140px;
-    background: #ff4929;
-    border-radius: 50%;
-    margin-bottom: 16px;
-}
-
-.coordinatesLabel {
-    background: #111;
-    color: #fff;
-    font-size: 14px;
-    font-weight: 400;
-    padding: 10px 0;
-    width: 320px;
-    text-align: center;
-    border-radius: 9px;
-    margin-top: 8px;
-}
-
-.coordinatesWrapper {
-    width: 100%;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+    justify-content: space-around;
+    width: 50%;
 }

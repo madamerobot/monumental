@@ -2,24 +2,24 @@
     display: flex;
     flex-direction: column;
     align-items: center;
+    margin-bottom: 30px;
 }
 
 .dial {
     position: relative;
     width: 100%;
     height: 100%;
-    border: 2px solid #111;
+    border: 1px solid var(--offwhite);
     border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
-    margin-bottom: 16px;
 }
 
 .dialValue {
-    font-size: 30px;
+    font-size: 22px;
     font-weight: 400;
-    color: #111;
+    color: var(--offwhite);
     z-index: 1;
 }
 
@@ -29,16 +29,15 @@
     left: 50%;
     width: 24px;
     height: 24px;
-    background: #111;
+    background: var(--offwhite);
     border-radius: 50%;
     transform: translate(-50%, -50%);
     z-index: 2;
 }
 
 .dialLabel {
-    background: #111;
     color: #fff;
-    font-size: 14px;
+    font-size: 16px;
     font-weight: 400;
     padding: 10px 0;
     width: 100%;

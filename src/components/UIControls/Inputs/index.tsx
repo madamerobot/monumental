@@ -3,6 +3,7 @@ import DialInput from './DialInput';
 import SliderInput from './SliderInput';
 import { useUIState } from '@/app/context/UIStateContext';
 import type { UIControlsProps } from '../index';
+import CoordinatesInput from './CoordinatesInput';
 
 export default function Inputs({ sendCommand }: UIControlsProps) {
     const { uiState, setUIState } = useUIState();
@@ -23,74 +24,33 @@ export default function Inputs({ sendCommand }: UIControlsProps) {
         }
     };
 
-    const handleXChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        const value = parseFloat(event.target.value) || 0;
-        handleUpdatePose(value, uiState.position.y, uiState.position.z, true);
-    };
-
-    const handleYChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        const value = parseFloat(event.target.value) || 0;
-        handleUpdatePose(uiState.position.x, value, uiState.position.z, true);
-    };
-
-    const handleZChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        const value = parseFloat(event.target.value) || 0;
-        handleUpdatePose(uiState.position.x, uiState.position.y, value, true);
-    };
-
     return (
         <div className={styles.inputsContainer}>
             <div className={styles.dialsSection}>
                 <DialInput
                     degrees={uiState.base}
-                    label="Base"
+                    label="Base Rotation"
                     onChange={(value, isFinished) => handleUpdateJoint('base', value, isFinished)}
                 />
                 <DialInput
                     degrees={uiState.elbow}
-                    label="Elbow"
+                    label="Elbow Rotation"
                     onChange={(value, isFinished) => handleUpdateJoint('elbow', value, isFinished)}
                 />
                 <DialInput
                     degrees={uiState.wrist}
-                    label="Wrist"
+                    label="Wrist Rotation"
                     onChange={(value, isFinished) => handleUpdateJoint('wrist', value, isFinished)}
                 />
             </div>
-            <div className={styles.coordinatesSection}>
-                <div className={styles.coordinatesWrapper}>
-                    <div className={styles.coordinatesValues}>
-                        <div>
-                            <input
-                                type="number"
-                                defaultValue={uiState.position.x}
-                                aria-label="xPos"
-                                name="xPos"
-                                onChange={handleXChange}
-                            />
-                        </div>
-                        <div>
-                            <input
-                                type="number"
-                                defaultValue={uiState.position.y}
-                                aria-label="yPos"
-                                name="yPos"
-                                onChange={handleYChange}
-                            />
-                        </div>
-                        <div>
-                            <input
-                                type="number"
-                                defaultValue={uiState.position.z}
-                                aria-label="zPos"
-                                name="zPos"
-                                onChange={handleZChange}
-                            />
-                        </div>
-                    </div>
-                    <div className={styles.coordinatesCircle} />
+            <div className={styles.layoutWrapper}>
+                <CoordinatesInput
+                    onChange={handleUpdatePose}
+                />
+                <div className={styles.sliderSection}>
+                    <SliderInput label="Gripper Opening" minValue={0} maxValue={10} onChange={() => { }} value={uiState.gripper} />
+                    <SliderInput label="Lift Height" minValue={0} maxValue={10} onChange={() => { }} value={uiState.lift} />
                 </div>
-                <div className={styles.coordinatesLabel}>Coordinates</div>
             </div>
         </div >
     );

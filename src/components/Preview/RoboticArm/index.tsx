@@ -29,17 +29,12 @@ export function RoboticArm({ position }: RoboticArmProps) {
   // Helper function to convert degrees to radians
   const toRadians = (degrees: number) => degrees * (Math.PI / 180)
 
-  // Hardcoded values for now
-  const baseRotation = robotState.base; // degrees
-  const elbowRotation = robotState.elbow; // degrees
-  const wristRotation = robotState.wrist; // degrees
+  // We need to invert the angle coming from our motionTrajectory calcs, to match
+  // with the coordinate system of the 3D space & y-axis rotation
+  const baseRotation = robotState.base * -1; // degrees
+  const elbowRotation = robotState.elbow * -1; // degrees
+  const wristRotation = robotState.wrist * -1; // degrees
   const shoulderRotation = -90; // degrees, hardcode for now
-
-  // Create different colored materials for each joint
-  // const redMaterial = new THREE.MeshStandardMaterial({ color: 'red', transparent: true, opacity: 0.5 })
-  // const blueMaterial = new THREE.MeshStandardMaterial({ color: 'blue', transparent: true, opacity: 0.5 })
-  // const greenMaterial = new THREE.MeshStandardMaterial({ color: 'green', transparent: true, opacity: 0.5 })
-  // const yellowMaterial = new THREE.MeshStandardMaterial({ color: 'yellow', transparent: true, opacity: 0.5 })
 
   return (
     <group ref={group} rotation={[0, toRadians(baseRotation), 0]} position={[position[0], position[1], position[2]]} dispose={null} >

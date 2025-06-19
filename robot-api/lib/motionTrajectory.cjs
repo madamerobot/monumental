@@ -51,12 +51,12 @@ function returnMotionTrajectory(currentState, targetAngles, options = {}) {
         // Interpolate each joint angle
         for (const [joint, targetAngle] of Object.entries(targetAngles)) {
             if (joint === 'position') {
-                state.angles[joint] = targetAngles.position; // Copy position as is
+                state.angles[joint] = targetAngles.position;
                 continue;
             }
 
             const currentAngle = currentState.angles[joint];
-            // Find shortest path and interpolate along it
+            // // Find shortest path and interpolate along it
             const shortestPath = shortestAnglePath(currentAngle, targetAngle);
             const interpolatedAngle = Math.round(currentAngle + shortestPath * easedProgress);
             state.angles[joint] = normalizeAngle(interpolatedAngle);

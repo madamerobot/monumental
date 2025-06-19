@@ -18,7 +18,6 @@ export function Scene() {
         color="white"
         intensity={2}
       />
-      {/* <pointLight position={[-2, -2, 2]} intensity={2} /> */}
       <PerspectiveCamera makeDefault position={[0, 0, 15]} />
 
       <Center>

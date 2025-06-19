@@ -11,7 +11,7 @@ interface SliderInputProps {
     onChange: (newValue: number, isFinished: boolean) => void;
 }
 
-const TRACK_HEIGHT = 180;
+const TRACK_HEIGHT = 20;
 const INDICATOR_SIZE = 24;
 
 export default function SliderInput({ label, minValue, maxValue, value, onChange }: SliderInputProps) {
@@ -22,7 +22,6 @@ export default function SliderInput({ label, minValue, maxValue, value, onChange
 
     // Calculate the indicator's position as a percentage of the track
     const percent = ((roundedValue - minValue) / (maxValue - minValue)) * 100;
-    const top = `calc(${percent}% - ${INDICATOR_SIZE / 2}px)`;
 
     // Handle drag
     const handlePointerDown = (e: React.PointerEvent) => {
@@ -55,7 +54,6 @@ export default function SliderInput({ label, minValue, maxValue, value, onChange
                 <div
                     className={styles.sliderIndicator}
                     style={{
-                        top,
                         width: INDICATOR_SIZE,
                         height: INDICATOR_SIZE,
                         position: 'absolute',
@@ -66,8 +64,11 @@ export default function SliderInput({ label, minValue, maxValue, value, onChange
                     onPointerUp={handlePointerUp}
                 />
             </div>
-            <div className={styles.sliderLabel}>{label}</div>
-            <div className={styles.sliderValue}>{roundedValue}</div>
+            <div className={styles.valueWrapper}>
+                <div className={styles.sliderLabel}>{label}</div>
+                <div className={styles.sliderValue}>{roundedValue}</div>
+            </div>
+
         </div>
     );
 }

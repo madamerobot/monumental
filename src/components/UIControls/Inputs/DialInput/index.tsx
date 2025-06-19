@@ -10,9 +10,9 @@ interface DialInputProps {
     onChange: (value: number, isFinished: boolean) => void;
 }
 
-const DIAL_SIZE = 180;
+const DIAL_SIZE = 85;
 const DIAL_RADIUS = DIAL_SIZE / 2;
-const INDICATOR_SIZE = 24;
+const INDICATOR_SIZE = 20;
 const INDICATOR_RADIUS = INDICATOR_SIZE / 2;
 const INDICATOR_DISTANCE = DIAL_RADIUS;
 

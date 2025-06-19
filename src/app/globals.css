@@ -9,19 +9,18 @@
 
 
 :root {
-  --background: #000;
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+  --offwhite: #FFFDEE;
+  --grey: #BFBFBF;
+  --black: #000;
+  --neongreen: #19FF0D;
+  --orange: #F74823;
+  --red: #FF0004;
+  --yellow: #E6C72A;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
+  background: var(--black);
+  color: var(--black);
   font-family: 'Satoshi', Arial, Helvetica, sans-serif;
   margin: 0;
 }
@@ -33,4 +32,5 @@ body {
   justify-content: center;
   height: 100vh;
   width: 100vw;
+  overflow: hidden;
 }
