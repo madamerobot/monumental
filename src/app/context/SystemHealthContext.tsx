@@ -1,9 +1,5 @@
 import React, { createContext, useContext } from 'react';
-
-export interface SystemHealthState {
-    errors: string[];
-    webSocketConnection: 'connected' | 'waiting' | 'error';
-}
+import type { SystemHealthState } from '../types/systemHealthState';
 
 export const SystemHealthContext = createContext<{
     systemState: SystemHealthState;

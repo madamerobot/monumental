@@ -2,6 +2,7 @@ import { useEffect, useRef, useCallback, useState } from 'react';
 import { useRobotState } from '../context/RobotStateContext';
 import { useSystemHealthState } from '../context/SystemHealthContext'
 import type { RobotState } from '../types/robotState';
+import type { SystemHealthState } from '../types/systemHealthState';
 
 export function useWebSocket() {
     const wsUrl = process.env.NEXT_PUBLIC_WS_URL || 'ws://localhost:3001';
@@ -21,7 +22,11 @@ export function useWebSocket() {
         }
         ws.current.onclose = () => setIsOpen(false);
         ws.current.onmessage = (event) => {
-            const { type, payload } = JSON.parse(event.data);
+            const { type, payload, error } = JSON.parse(event.data);
+
+            if (error || payload.error) {
+                setSystemState({ errors: [...systemState.errors, error], webSocketConnection: 'error' })
+            }
 
             switch (type) {
                 case 'init':
@@ -31,6 +36,7 @@ export function useWebSocket() {
                         ...prevState,
                         ...payload
                     }));
+                    setSystemState({ errors: [], webSocketConnection: 'connected' })
                     break;
                 case 'poseUpdate':
                     // Update robot state with new joint angles
@@ -38,6 +44,7 @@ export function useWebSocket() {
                         ...prevState,
                         ...payload
                     }));
+                    setSystemState({ errors: [], webSocketConnection: 'connected' })
                     break;
                 case 'error':
                     setSystemState({ errors: [...systemState.errors, `WebSocket error: ${payload.message}`], webSocketConnection: 'error' })

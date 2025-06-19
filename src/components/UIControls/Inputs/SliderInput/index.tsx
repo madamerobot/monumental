@@ -12,7 +12,7 @@ interface SliderInputProps {
 }
 
 const TRACK_HEIGHT = 20;
-const INDICATOR_SIZE = 24;
+const INDICATOR_SIZE = 20;
 
 export default function SliderInput({ label, minValue, maxValue, value, onChange }: SliderInputProps) {
     const trackRef = useRef<HTMLDivElement>(null);
@@ -23,6 +23,9 @@ export default function SliderInput({ label, minValue, maxValue, value, onChange
     // Calculate the indicator's position as a percentage of the track
     const percent = ((roundedValue - minValue) / (maxValue - minValue)) * 100;
 
+    // Calculate the Y position for the indicator (inverted since 0 is at top)
+    const indicatorY = TRACK_HEIGHT - (percent / 100) * TRACK_HEIGHT;
+
     // Handle drag
     const handlePointerDown = (e: React.PointerEvent) => {
         (e.target as HTMLElement).setPointerCapture(e.pointerId);
@@ -32,9 +35,13 @@ export default function SliderInput({ label, minValue, maxValue, value, onChange
         if (!(e.buttons & 1)) return; // Only drag with left mouse button
         const rect = trackRef.current?.getBoundingClientRect();
         if (!rect) return;
+
+        // Calculate Y position relative to track's top edge
         let y = e.clientY - rect.top;
         y = Math.max(0, Math.min(y, TRACK_HEIGHT));
-        const newPercent = y / TRACK_HEIGHT;
+
+        // Invert the calculation since we want 0 at top, max at bottom
+        const newPercent = 1 - (y / TRACK_HEIGHT);
         const newValue = Math.round(minValue + newPercent * (maxValue - minValue));
         onChange(newValue, false);
     };

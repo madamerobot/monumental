@@ -34,7 +34,7 @@ function returnInverseKinematics(currentState, targetPosition) {
         const minReach = Math.abs(shoulderLength - forearmLength - wristLength);
 
         if (targetDistance > maxReach || targetDistance < minReach) {
-            console.warn('Target position not reachable:', targetPosition);
+            currentState.error = 'Target position not reachable.'
             return {
                 base: currentState.angles.base,
                 lift: currentState.angles.lift,
@@ -77,7 +77,7 @@ function returnInverseKinematics(currentState, targetPosition) {
         return angles;
 
     } catch (error) {
-        console.error('IK calculation error:', error);
+        currentState.error = 'IK calculation error';
         return {
             base: currentState.angles.base,
             lift: currentState.angles.lift,

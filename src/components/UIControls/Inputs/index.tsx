@@ -44,13 +44,13 @@ export default function Inputs({ sendCommand }: UIControlsProps) {
                 />
             </div>
             <div className={styles.layoutWrapper}>
-                <CoordinatesInput
-                    onChange={handleUpdatePose}
-                />
                 <div className={styles.sliderSection}>
                     <SliderInput label="Gripper Opening" minValue={0} maxValue={10} onChange={() => { }} value={uiState.gripper} />
                     <SliderInput label="Lift Height" minValue={0} maxValue={10} onChange={() => { }} value={uiState.lift} />
                 </div>
+                <CoordinatesInput
+                    onChange={handleUpdatePose}
+                />
             </div>
         </div >
     );
