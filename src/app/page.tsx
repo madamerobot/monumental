@@ -7,6 +7,7 @@ import { RobotStateContext } from "./context/RobotStateContext";
 import { UIStateContext } from "./context/UIStateContext";
 import type { UIState } from './types/uiState';
 import type { RobotState } from './types/robotState'
+import { SystemHealthContext, SystemHealthState } from './context/SystemHealthContext';
 
 const initialRobotState: RobotState = {
   base: 0,
@@ -34,23 +35,28 @@ const initialUIState: UIState = {
   },
 };
 
+const initialSystemState: SystemHealthState = {
+  errors: [],
+  webSocketConnection: 'waiting'
+}
 
 export default function Page() {
 
   const [robotState, setRobotState] = useState<RobotState>(initialRobotState);
   const [uiState, setUIState] = useState<UIState>(initialUIState);
+  const [systemState, setSystemState] = useState<SystemHealthState>(initialSystemState);
 
   return (
     <UIStateContext.Provider value={{ uiState, setUIState }}>
       <RobotStateContext.Provider value={{ robotState, setRobotState }}>
-
-        <main>
-          <div className="wrapper">
-            <Preview />
-            <UIControls />
-          </div>
-        </main>
-
+        <SystemHealthContext.Provider value={{ systemState, setSystemState }}>
+          <main>
+            <div className="wrapper">
+              <Preview />
+              <UIControls />
+            </div>
+          </main>
+        </SystemHealthContext.Provider>
       </RobotStateContext.Provider>
     </UIStateContext.Provider>
 

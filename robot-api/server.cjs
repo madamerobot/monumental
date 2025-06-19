@@ -6,7 +6,7 @@ const { returnMotionTrajectory } = require('./lib/motionTrajectory.cjs');
 
 const wss = new Server({ port: process.env.NEXT_PUBLIC_SOCKET_PORT });
 
-// Store current robot state and active intervals
+// Store current robot state
 let currentState = {
     angles: {
         base: 0,
@@ -56,7 +56,7 @@ wss.on('connection', (ws) => {
                         clearInterval(interval);
                         clientIntervals.delete(ws);
                     }
-                }, 50); // Match the interval from motionTrajectory
+                }, 50);
 
                 // Store the interval reference
                 clientIntervals.set(ws, interval);

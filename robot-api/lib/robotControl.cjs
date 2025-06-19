@@ -1,15 +1,4 @@
 /**
- * Robot configuration and control
- */
-const robotConfig = {
-    joints: {
-        base: { minAngle: -90, maxAngle: 90 },
-        elbow: { minAngle: -90, maxAngle: 90 },
-        wrist: { minAngle: -90, maxAngle: 90 },
-    }
-};
-
-/**
  * TODO: Implement inverse kinematics calculation
  * This function should calculate joint angles for a given end-effector position
  * @param {number} x - Target x position
@@ -43,11 +32,11 @@ function calculateIK(x, y, z, config) {
 function moveRobot(target) {
     // If target is a position (x,y,z), calculate IK
     if (target.x !== undefined) {
-        return calculateIK(target.x, target.y, target.z, robotConfig);
+        return calculateIK(target.x, target.y, target.z);
     }
 
     // Return the target angles
     return target.angles;
 }
 
-module.exports = { moveRobot, robotConfig };
+module.exports = { moveRobot };

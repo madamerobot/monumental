@@ -1,5 +1,6 @@
 import { useEffect, useRef, useCallback, useState } from 'react';
 import { useRobotState } from '../context/RobotStateContext';
+import { useSystemHealthState } from '../context/SystemHealthContext'
 import type { RobotState } from '../types/robotState';
 
 export function useWebSocket() {
@@ -9,10 +10,15 @@ export function useWebSocket() {
     const { setRobotState } = useRobotState();
     const [isOpen, setIsOpen] = useState(false);
 
+    const { setSystemState, systemState } = useSystemHealthState();
+
     // Connect on mount
     useEffect(() => {
         ws.current = new WebSocket(wsUrl);
-        ws.current.onopen = () => setIsOpen(true);
+        ws.current.onopen = () => {
+            setIsOpen(true);
+            setSystemState({ errors: [], webSocketConnection: 'connected' })
+        }
         ws.current.onclose = () => setIsOpen(false);
         ws.current.onmessage = (event) => {
             const { type, payload } = JSON.parse(event.data);
@@ -27,10 +33,10 @@ export function useWebSocket() {
                     }));
                     break;
                 case 'error':
-                    console.error('WebSocket error:', payload.message);
+                    setSystemState({ errors: [...systemState.errors, `WebSocket error: ${payload.message}`], webSocketConnection: 'error' })
                     break;
                 default:
-                    console.warn('Unknown message type:', type);
+                    setSystemState({ errors: [...systemState.errors, `Unkown message type: ${type}`], webSocketConnection: 'error' })
             }
         };
 
@@ -44,10 +50,10 @@ export function useWebSocket() {
 
         if (ws.current && ws.current.readyState === WebSocket.OPEN) {
             ws.current.send(JSON.stringify(msg));
+            // Resetting error array should be improved, hacky temp solution
+            setSystemState({ errors: [], webSocketConnection: 'connected' })
         } else {
-            // Optionally: queue the message, show an error, or reconnect
-            console.warn('WebSocket is not open. Message not sent.');
-            // update SystemHealth context with error
+            setSystemState({ errors: [...systemState.errors, 'WebSocket is not open. Message not sent.'], webSocketConnection: 'error' })
         }
     }, []);
 

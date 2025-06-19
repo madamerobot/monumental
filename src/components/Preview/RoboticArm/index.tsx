@@ -61,11 +61,11 @@ export function RoboticArm({ position }: RoboticArmProps) {
                   <mesh name="Cylinder021_Material_0" geometry={nodes.Cylinder021_Material_0.geometry} material={materials.Material} />
                 </group>
               </group>
-              <group name="Bone007_05" position={[0, 3.334, -0.73]} rotation={[toRadians(-149), 0.017, 0]}>
+              {/* <group name="Bone007_05" position={[0, 3.334, -0.73]} rotation={[toRadians(-149), 0.017, 0]}>
                 <group name="Cylinder019" rotation={[toRadians(149), 0.017, 0.005]}>
                   <mesh name="Cylinder019_Material_0" geometry={nodes.Cylinder019_Material_0.geometry} material={materials.Material} />
                 </group>
-              </group>
+              </group> */}
               <group name="Cylinder014">
                 <mesh name="Cylinder014_Material_0" geometry={nodes.Cylinder014_Material_0.geometry} material={materials.Material} />
               </group>
@@ -76,11 +76,11 @@ export function RoboticArm({ position }: RoboticArmProps) {
                 <mesh name="Cylinder004_Plate001_Material_0" geometry={nodes.Cylinder004_Plate001_Material_0.geometry} material={materials.Material} />
               </group>
             </group>
-            <group name="Bone005_06" position={[0, 0.864, -0.9]} rotation={[toRadians(-59), -0.001, 0]}>
+            {/* <group name="Bone005_06" position={[0, 0.864, -0.9]} rotation={[toRadians(-59), -0.001, 0]}>
               <group name="Cylinder016" position={[0, 0.005, -0.004]} rotation={[toRadians(-32), -0.001, 0.004]}>
                 <mesh name="Cylinder016_Material_0" geometry={nodes.Cylinder016_Material_0.geometry} material={materials.Material} />
               </group>
-            </group>
+            </group> */}
             <group name="Cylinder013" position={[0, -0.036, 0]} rotation={[toRadians(shoulderRotation), 0, 0]}>
               <mesh name="Cylinder013_Material_0" geometry={nodes.Cylinder013_Material_0.geometry} material={materials.Material} />
             </group>
