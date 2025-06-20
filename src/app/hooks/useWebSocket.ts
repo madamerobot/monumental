@@ -2,6 +2,7 @@ import { useEffect, useRef, useCallback, useState } from 'react';
 import { useRobotState } from '../context/RobotStateContext';
 import { useSystemHealthState } from '../context/SystemHealthContext'
 import type { RobotState } from '../types/robotState';
+import type { WsCommand } from '../types/wsCommand';
 
 export function useWebSocket() {
     const wsUrl = process.env.NEXT_PUBLIC_WS_URL || 'ws://localhost:3001';
@@ -64,7 +65,7 @@ export function useWebSocket() {
     }, [wsUrl, setRobotState]);
 
     // Function to send a message
-    const send = useCallback((msg: any) => {
+    const send = useCallback((msg: WsCommand) => {
 
         if (ws.current && ws.current.readyState === WebSocket.OPEN) {
             ws.current.send(JSON.stringify(msg));

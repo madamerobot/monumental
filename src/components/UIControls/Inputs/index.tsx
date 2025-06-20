@@ -4,9 +4,10 @@ import SliderInput from './SliderInput';
 import { useUIState } from '@/app/context/UIStateContext';
 import { useSystemHealthState } from '@/app/context/SystemHealthContext';
 import CoordinatesInput from './CoordinatesInput';
+import type { WsCommand } from '@/app/types/wsCommand';
 
 interface InputsProps {
-    sendCommand: (msg: any) => void;
+    sendCommand: (msg: WsCommand) => void;
 }
 
 export default function Inputs({ sendCommand }: InputsProps) {

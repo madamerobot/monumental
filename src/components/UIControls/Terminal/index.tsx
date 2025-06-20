@@ -17,7 +17,7 @@ type TerminalMessageWithPoseError = {
 function generateStatusMessage({ message, wsConnection, isPoseError, isControlError }: TerminalMessageWithPoseError) {
 
     if (isPoseError) {
-        return 'The x/y/z position you selected is not reachable by the robot'
+        return 'The gripper position you selected is not reachable by the robot'
     }
     if (isControlError) {
         return 'This control is not supported yet'
@@ -45,7 +45,7 @@ function indicatorClass(wsConnection: 'connected' | 'error' | 'waiting', isPoseE
 
 export default function Terminal({ message, wsConnection, errors }: TerminalMessage) {
 
-    const isPoseError = errors.length > 0 && errors.includes('This target position is not reachable');
+    const isPoseError = errors.length > 0 && errors.includes('Target position not reachable.');
     const isControlError = errors.length > 0 && errors.includes('This control is not supported yet');
 
     return <div className={styles.terminalContainer}>

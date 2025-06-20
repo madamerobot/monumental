@@ -41,6 +41,8 @@ function returnInverseKinematics(currentState, targetPosition) {
                 elbow: currentState.angles.elbow,
                 wrist: currentState.angles.wrist
             };
+        } else {
+            currentState.error = null;
         }
 
         // Calculate shoulder and elbow angles using cosine law
