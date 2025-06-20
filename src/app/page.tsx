@@ -1,8 +1,8 @@
 'use client';
 
 import React, { useState } from 'react';
-import Preview from '../components/Preview';
-import UIControls from '../components/UIControls';
+import Preview from './components/Preview';
+import UIControls from './components/UIControls';
 import { RobotStateContext } from "./context/RobotStateContext";
 import { UIStateContext } from "./context/UIStateContext";
 import { SystemHealthContext } from './context/SystemHealthContext';

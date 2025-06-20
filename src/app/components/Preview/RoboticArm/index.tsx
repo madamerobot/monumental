@@ -2,7 +2,7 @@
 
 import React from 'react'
 import { useGLTF } from '@react-three/drei'
-import { useRobotState } from '../../../app/context/RobotStateContext'
+import { useRobotState } from '../../../context/RobotStateContext'
 import * as THREE from 'three'
 import { GLTF } from 'three-stdlib'
 
@@ -23,7 +23,6 @@ export function RoboticArm({ position }: RoboticArmProps) {
 
   const group = React.useRef(null)
   const { nodes, materials } = useGLTF('/models/robotic_arm-transformed.glb') as unknown as GLTFResult
-  // const { actions } = useAnimations(animations, group)
   const { robotState } = useRobotState()
 
   // Helper function to convert degrees to radians
