@@ -2,18 +2,6 @@
 
 A real-time 3D robotic arm simulation and control interface built with Next.js, React Three Fiber, and WebSocket communication.
 
-## Remarks regarding the assignment
-
-I decided to descope the following items from the original brief due to time constraints:
-
-- We only update 1 joint at a time through UI
-- We won’t animate gripper (not included in 3D model)
-- We don’t animate lift (not included in 3D model)
-- We use a simple easing function for trajectory calculations and don't consider maxSpeed and acceleration
-- We don’t use authentication for client <--> ws communication
-- We don’t make app available offline (Webworkers etc)
-- We don’t make app responsive
-
 ## 🎯 Project Overview
 
 Monumental is an interactive web application that simulates a 4-degree-of-freedom robotic arm with real-time 3D visualization and intuitive control interfaces. The project demonstrates advanced robotics concepts including inverse kinematics, motion trajectory planning, and real-time state management.
