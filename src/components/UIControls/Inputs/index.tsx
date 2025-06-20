@@ -3,10 +3,13 @@ import DialInput from './DialInput';
 import SliderInput from './SliderInput';
 import { useUIState } from '@/app/context/UIStateContext';
 import { useSystemHealthState } from '@/app/context/SystemHealthContext';
-import type { UIControlsProps } from '../index';
 import CoordinatesInput from './CoordinatesInput';
 
-export default function Inputs({ sendCommand }: UIControlsProps) {
+interface InputsProps {
+    sendCommand: (msg: any) => void;
+}
+
+export default function Inputs({ sendCommand }: InputsProps) {
     const { uiState, setUIState } = useUIState();
     const { setSystemState } = useSystemHealthState();
 

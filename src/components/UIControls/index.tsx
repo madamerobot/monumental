@@ -4,10 +4,6 @@ import Terminal from "./Terminal";
 import styles from './UIControls.module.css';
 import { useSystemHealthState } from "@/app/context/SystemHealthContext";
 
-export type UIControlsProps = {
-    sendCommand: (msg: any) => void;
-}
-
 export default function UIControls() {
 
     const { send } = useWebSocket();

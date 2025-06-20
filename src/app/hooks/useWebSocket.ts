@@ -2,7 +2,6 @@ import { useEffect, useRef, useCallback, useState } from 'react';
 import { useRobotState } from '../context/RobotStateContext';
 import { useSystemHealthState } from '../context/SystemHealthContext'
 import type { RobotState } from '../types/robotState';
-import type { SystemHealthState } from '../types/systemHealthState';
 
 export function useWebSocket() {
     const wsUrl = process.env.NEXT_PUBLIC_WS_URL || 'ws://localhost:3001';
@@ -61,6 +60,7 @@ export function useWebSocket() {
         return () => {
             ws.current?.close();
         };
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [wsUrl, setRobotState]);
 
     // Function to send a message
@@ -73,6 +73,7 @@ export function useWebSocket() {
         } else {
             setSystemState({ errors: [...systemState.errors, 'WebSocket is not open. Message not sent.'], webSocketConnection: 'error' })
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     return { send, isOpen };

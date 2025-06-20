@@ -13,11 +13,9 @@ interface SliderInputProps {
 
 export default function SliderInput({ label, minValue, maxValue, value, onChange }: SliderInputProps) {
     const trackRef = useRef<HTMLDivElement>(null);
-    const indicatorRef = useRef<HTMLDivElement>(null);
 
     const [trackWidth, setTrackWidth] = useState(0);
     const [trackLeft, setTrackLeft] = useState(0);
-    const [indicatorWidth, setIndicatorWidth] = useState(0);
     const [sliderValue, setSliderValue] = useState(value);
 
     useEffect(() => {
@@ -25,10 +23,7 @@ export default function SliderInput({ label, minValue, maxValue, value, onChange
             setTrackWidth(trackRef.current.getBoundingClientRect().width);
             setTrackLeft(trackRef.current.getBoundingClientRect().left);
         }
-        if (indicatorRef.current) {
-            setIndicatorWidth(indicatorRef.current.getBoundingClientRect().width);
-        }
-    }, [trackRef, indicatorRef]);
+    }, [trackRef]);
 
     // Handle drag
     const handlePointerDown = (e: React.PointerEvent) => {
@@ -39,7 +34,7 @@ export default function SliderInput({ label, minValue, maxValue, value, onChange
         if (!(e.buttons & 1)) return; // Only drag with left mouse button
 
         // Calculate X position relative to track's left edge
-        let x = e.clientX - trackLeft;
+        const x = e.clientX - trackLeft;
         const newValue = Math.round(minValue + (x / trackWidth) * (maxValue - minValue));
         // clamp the value between min and max
         const clampedValue = Math.max(minValue, Math.min(newValue, maxValue));
@@ -61,7 +56,6 @@ export default function SliderInput({ label, minValue, maxValue, value, onChange
             >
                 <div
                     className={styles.sliderIndicator}
-                    ref={indicatorRef}
                     style={{
                         position: 'absolute',
                         left: `${(sliderValue - minValue) / (maxValue - minValue) * 100}%`,

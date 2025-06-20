@@ -1,7 +1,7 @@
 'use client'
 
-import React, { useEffect, useState, useRef } from 'react'
-import { useGLTF, useAnimations } from '@react-three/drei'
+import React from 'react'
+import { useGLTF } from '@react-three/drei'
 import { useRobotState } from '../../../app/context/RobotStateContext'
 import * as THREE from 'three'
 import { GLTF } from 'three-stdlib'
@@ -22,7 +22,7 @@ interface RoboticArmProps {
 export function RoboticArm({ position }: RoboticArmProps) {
 
   const group = React.useRef(null)
-  const { nodes, materials, animations } = useGLTF('/models/robotic_arm-transformed.glb') as unknown as GLTFResult
+  const { nodes, materials } = useGLTF('/models/robotic_arm-transformed.glb') as unknown as GLTFResult
   // const { actions } = useAnimations(animations, group)
   const { robotState } = useRobotState()
 

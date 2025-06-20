@@ -5,11 +5,12 @@ import Preview from '../components/Preview';
 import UIControls from '../components/UIControls';
 import { RobotStateContext } from "./context/RobotStateContext";
 import { UIStateContext } from "./context/UIStateContext";
-import { SystemHealthContext, SystemHealthState } from './context/SystemHealthContext';
+import { SystemHealthContext } from './context/SystemHealthContext';
 import { RobotConfigState } from './types/robotConfigState';
 import { RobotConfigContext } from './context/RobotConfigContext';
 import type { UIState } from './types/uiState';
 import type { RobotState } from './types/robotState'
+import type { SystemHealthState } from './types/systemHealthState';
 
 const initialRobotState: RobotState = {
   base: 0,
