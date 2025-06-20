@@ -23,7 +23,7 @@ Monumental is an interactive web application that simulates a 4-degree-of-freedo
 - **Real-time Communication**: WebSocket hooks for backend communication
 - **Type Safety**: Full TypeScript implementation with strict typing
 
-### Backend (monumental-api)[https://github.com/madamerobot/monumental-api]
+### Backend [monumental-api](https://github.com/madamerobot/monumental-api)
 - **Motion Planning**: Inverse kinematics and trajectory generation
 - **Real-time Updates**: WebSocket server for live state synchronization
 - **Robot Simulation**: Mathematical modeling of robotic arm kinematics
