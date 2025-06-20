@@ -1,6 +1,6 @@
 "use client"
 
-import React, { useRef } from 'react';
+import React, { useRef, useEffect, useState } from 'react';
 import styles from './SliderInput.module.css';
 
 interface SliderInputProps {
@@ -11,20 +11,24 @@ interface SliderInputProps {
     onChange: (newValue: number, isFinished: boolean) => void;
 }
 
-const TRACK_HEIGHT = 20;
-const INDICATOR_SIZE = 20;
-
 export default function SliderInput({ label, minValue, maxValue, value, onChange }: SliderInputProps) {
     const trackRef = useRef<HTMLDivElement>(null);
+    const indicatorRef = useRef<HTMLDivElement>(null);
 
-    // Ensure value is rounded
-    const roundedValue = Math.round(value);
+    const [trackWidth, setTrackWidth] = useState(0);
+    const [trackLeft, setTrackLeft] = useState(0);
+    const [indicatorWidth, setIndicatorWidth] = useState(0);
+    const [sliderValue, setSliderValue] = useState(value);
 
-    // Calculate the indicator's position as a percentage of the track
-    const percent = ((roundedValue - minValue) / (maxValue - minValue)) * 100;
-
-    // Calculate the Y position for the indicator (inverted since 0 is at top)
-    const indicatorY = TRACK_HEIGHT - (percent / 100) * TRACK_HEIGHT;
+    useEffect(() => {
+        if (trackRef.current) {
+            setTrackWidth(trackRef.current.getBoundingClientRect().width);
+            setTrackLeft(trackRef.current.getBoundingClientRect().left);
+        }
+        if (indicatorRef.current) {
+            setIndicatorWidth(indicatorRef.current.getBoundingClientRect().width);
+        }
+    }, [trackRef, indicatorRef]);
 
     // Handle drag
     const handlePointerDown = (e: React.PointerEvent) => {
@@ -33,22 +37,20 @@ export default function SliderInput({ label, minValue, maxValue, value, onChange
 
     const handlePointerMove = (e: React.PointerEvent) => {
         if (!(e.buttons & 1)) return; // Only drag with left mouse button
-        const rect = trackRef.current?.getBoundingClientRect();
-        if (!rect) return;
 
-        // Calculate Y position relative to track's top edge
-        let y = e.clientY - rect.top;
-        y = Math.max(0, Math.min(y, TRACK_HEIGHT));
+        // Calculate X position relative to track's left edge
+        let x = e.clientX - trackLeft;
+        const newValue = Math.round(minValue + (x / trackWidth) * (maxValue - minValue));
+        // clamp the value between min and max
+        const clampedValue = Math.max(minValue, Math.min(newValue, maxValue));
 
-        // Invert the calculation since we want 0 at top, max at bottom
-        const newPercent = 1 - (y / TRACK_HEIGHT);
-        const newValue = Math.round(minValue + newPercent * (maxValue - minValue));
-        onChange(newValue, false);
+        setSliderValue(clampedValue);
+        onChange(clampedValue, false);
     };
 
     const handlePointerUp = (e: React.PointerEvent) => {
         (e.target as HTMLElement).releasePointerCapture(e.pointerId);
-        onChange(roundedValue, true);
+        onChange(sliderValue, true);
     };
 
     return (
@@ -56,15 +58,13 @@ export default function SliderInput({ label, minValue, maxValue, value, onChange
             <div
                 className={styles.sliderTrack}
                 ref={trackRef}
-                style={{ height: TRACK_HEIGHT }}
             >
                 <div
                     className={styles.sliderIndicator}
+                    ref={indicatorRef}
                     style={{
-                        width: INDICATOR_SIZE,
-                        height: INDICATOR_SIZE,
                         position: 'absolute',
-                        cursor: 'pointer',
+                        left: `${(sliderValue - minValue) / (maxValue - minValue) * 100}%`,
                     }}
                     onPointerDown={handlePointerDown}
                     onPointerMove={handlePointerMove}
@@ -73,7 +73,7 @@ export default function SliderInput({ label, minValue, maxValue, value, onChange
             </div>
             <div className={styles.valueWrapper}>
                 <div className={styles.sliderLabel}>{label}</div>
-                <div className={styles.sliderValue}>{roundedValue}</div>
+                <div className={styles.sliderValue}>{sliderValue}</div>
             </div>
 
         </div>

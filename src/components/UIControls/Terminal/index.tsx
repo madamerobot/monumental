@@ -4,9 +4,25 @@ import styles from './Terminal.module.css';
 type TerminalMessage = {
     message: string;
     wsConnection: 'connected' | 'error' | 'waiting';
+    errors: string[];
 }
 
-function generateStatusMessage({ message, wsConnection }: TerminalMessage) {
+type TerminalMessageWithPoseError = {
+    message: string;
+    wsConnection: 'connected' | 'error' | 'waiting';
+    isPoseError: boolean;
+    isControlError: boolean;
+}
+
+function generateStatusMessage({ message, wsConnection, isPoseError, isControlError }: TerminalMessageWithPoseError) {
+
+    if (isPoseError) {
+        return 'The x/y/z position you selected is not reachable by the robot'
+    }
+    if (isControlError) {
+        return 'This control is not supported yet'
+    }
+
     switch (wsConnection) {
         case 'connected':
             return "All systems operational";
@@ -19,18 +35,23 @@ function generateStatusMessage({ message, wsConnection }: TerminalMessage) {
     }
 }
 
-export default function Terminal({ message, wsConnection }: TerminalMessage) {
+function indicatorClass(wsConnection: 'connected' | 'error' | 'waiting', isPoseError: boolean, isControlError: boolean) {
+    return classNames({
+        [styles.error]: wsConnection === 'error' || isPoseError || isControlError,
+        [styles.success]: wsConnection === 'connected' && !isPoseError && !isControlError,
+        [styles.waiting]: wsConnection === 'waiting' && !isPoseError && !isControlError,
+    })
+}
 
-    const indicatorClass = {
-        [styles.success]: wsConnection === 'connected',
-        [styles.waiting]: wsConnection === 'waiting',
-        [styles.error]: wsConnection === 'error'
-    }
+export default function Terminal({ message, wsConnection, errors }: TerminalMessage) {
+
+    const isPoseError = errors.length > 0 && errors.includes('This target position is not reachable');
+    const isControlError = errors.length > 0 && errors.includes('This control is not supported yet');
 
     return <div className={styles.terminalContainer}>
         <div className={styles.terminal}>
-            <div className={classNames(styles.terminalMessage, indicatorClass)}>
-                {generateStatusMessage({ message, wsConnection })}
+            <div className={classNames(styles.terminalMessage, indicatorClass(wsConnection, isPoseError, isControlError))}>
+                {generateStatusMessage({ message, wsConnection, isPoseError, isControlError })}
             </div>
         </div>
     </div >;

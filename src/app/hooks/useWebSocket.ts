@@ -24,10 +24,6 @@ export function useWebSocket() {
         ws.current.onmessage = (event) => {
             const { type, payload, error } = JSON.parse(event.data);
 
-            if (error || payload.error) {
-                setSystemState({ errors: [...systemState.errors, error], webSocketConnection: 'error' })
-            }
-
             switch (type) {
                 case 'init':
                 case 'jointUpdate':
@@ -36,7 +32,11 @@ export function useWebSocket() {
                         ...prevState,
                         ...payload
                     }));
-                    setSystemState({ errors: [], webSocketConnection: 'connected' })
+                    if (error) {
+                        setSystemState({ errors: error, webSocketConnection: 'connected' })
+                    } else {
+                        setSystemState({ errors: [], webSocketConnection: 'connected' })
+                    }
                     break;
                 case 'poseUpdate':
                     // Update robot state with new joint angles
@@ -44,13 +44,17 @@ export function useWebSocket() {
                         ...prevState,
                         ...payload
                     }));
-                    setSystemState({ errors: [], webSocketConnection: 'connected' })
+                    if (error) {
+                        setSystemState({ errors: error, webSocketConnection: 'connected' })
+                    } else {
+                        setSystemState({ errors: [], webSocketConnection: 'connected' })
+                    }
                     break;
                 case 'error':
-                    setSystemState({ errors: [...systemState.errors, `WebSocket error: ${payload.message}`], webSocketConnection: 'error' })
+                    setSystemState({ errors: [`WebSocket error: ${payload.message}`], webSocketConnection: 'connected' })
                     break;
                 default:
-                    setSystemState({ errors: [...systemState.errors, `Unkown message type: ${type}`], webSocketConnection: 'error' })
+                    setSystemState({ errors: [`Unkown message type: ${type}`], webSocketConnection: 'connected' })
             }
         };
 

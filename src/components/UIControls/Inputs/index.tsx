@@ -2,11 +2,13 @@ import styles from './Inputs.module.css';
 import DialInput from './DialInput';
 import SliderInput from './SliderInput';
 import { useUIState } from '@/app/context/UIStateContext';
+import { useSystemHealthState } from '@/app/context/SystemHealthContext';
 import type { UIControlsProps } from '../index';
 import CoordinatesInput from './CoordinatesInput';
 
 export default function Inputs({ sendCommand }: UIControlsProps) {
     const { uiState, setUIState } = useUIState();
+    const { setSystemState } = useSystemHealthState();
 
     const handleUpdateJoint = (joint: string, value: number, isFinished: boolean = false) => {
         setUIState({ ...uiState, [joint]: value });
@@ -23,6 +25,10 @@ export default function Inputs({ sendCommand }: UIControlsProps) {
             sendCommand({ type: 'updatePose', payload: { x, y, z } });
         }
     };
+
+    const handleUpdateUnsupported = () => {
+        setSystemState({ errors: ['This control is not supported yet'], webSocketConnection: 'connected' })
+    }
 
     return (
         <div className={styles.inputsContainer}>
@@ -45,8 +51,8 @@ export default function Inputs({ sendCommand }: UIControlsProps) {
             </div>
             <div className={styles.layoutWrapper}>
                 <div className={styles.sliderSection}>
-                    <SliderInput label="Gripper Opening" minValue={0} maxValue={10} onChange={() => { }} value={uiState.gripper} />
-                    <SliderInput label="Lift Height" minValue={0} maxValue={10} onChange={() => { }} value={uiState.lift} />
+                    <SliderInput label="Gripper Opening" minValue={0} maxValue={10} onChange={handleUpdateUnsupported} value={uiState.gripper} />
+                    <SliderInput label="Lift Height" minValue={0} maxValue={10} onChange={handleUpdateUnsupported} value={uiState.lift} />
                 </div>
                 <CoordinatesInput
                     onChange={handleUpdatePose}
