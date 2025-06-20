@@ -53,7 +53,8 @@ Monumental is an interactive web application that simulates a 4-degree-of-freedo
 3. **Set up environment variables**
    Create a `.env.local` file in the root directory:
    ```env
-   NEXT_PUBLIC_SOCKET_PORT=3001
+      NEXT_PUBLIC_WS_URL=ws://localhost:3001
+      NEXT_PUBLIC_SOCKET_PORT=3001
    ```
 
 4. **Start the development server**
