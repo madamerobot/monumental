@@ -24,6 +24,10 @@
         padding: 10px;
         width: 150px;
         margin-right: 10px;
+
+        @media (max-width: 1200px) {
+            width: 50px;
+        }
     }
 }
 
