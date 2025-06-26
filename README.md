@@ -8,6 +8,8 @@ This project is an interactive web application that simulates a 4-degree-of-free
 
 > **Note**: This is the frontend application for a robotic arm simulation. The backend API is maintained as a separate project at [robot-websocket-api](https://github.com/madamerobot/robot-websocket-api)). Please install and run separately.
 
+<img width="1390" alt="Screenshot 2025-06-26 at 09 40 20" src="https://github.com/user-attachments/assets/c4267331-310e-4647-a3e8-09c3a34201e3" />
+
 ### ✨ Key Features
 
 - **Real-time 3D Visualization**: Interactive 3D robotic arm model using React Three Fiber
