@@ -1,4 +1,4 @@
-# 🤖 Monumental - Robotic Arm Simulation
+# 🤖 Robotic Arm Simulation
 
 A real-time 3D robotic arm simulation and control interface built with Next.js, React Three Fiber, and WebSocket communication.
 
