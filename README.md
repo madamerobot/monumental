@@ -6,7 +6,7 @@ A real-time 3D robotic arm simulation and control interface built with Next.js, 
 
 Monumental is an interactive web application that simulates a 4-degree-of-freedom robotic arm with real-time 3D visualization and intuitive control interfaces. The project demonstrates advanced robotics concepts including inverse kinematics, motion trajectory planning, and real-time state management.
 
-> **Note**: This is the frontend application for the Monumental robotic arm simulation. The backend API is maintained as a separate project at [robot-websocket-api](https://github.com/madamerobot/robot-websocket-api)). Please install and run separately.
+> **Note**: This is the frontend application for a robotic arm simulation. The backend API is maintained as a separate project at [robot-websocket-api](https://github.com/madamerobot/robot-websocket-api)). Please install and run separately.
 
 ### ✨ Key Features
 
